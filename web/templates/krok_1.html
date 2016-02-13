@@ -1,0 +1,71 @@
+
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+	<div class="wrapper">
+
+
+		<div id="top_krok">
+
+			<div id="logowanie">
+				<button class="active">Zalogowany</button>
+					<p class="login">Jan Kowalski</p>
+				<button>Wyloguj się</button>
+			</div>
+
+			<div class="logo">
+				<a href="/"><img src="{% static "img/logo.png" %}"/></a>
+			</div>
+
+		</div>
+
+	<div class="content_krok">
+
+
+		<h3>Krok <span class="numeracja">1</span></h3>
+		<p>Dane podstawowe projektu</p>
+
+			<div class="dane">
+
+				<div class="rubryka">
+					<p>Nazwa projektu</p>
+					<input type="text" name="name">
+				</div>
+
+				<div class="rubryka">
+					<p>Obiekt</p>
+					<input type="text" name="object">
+				</div>
+
+				<div class="rubryka">
+					<p>Kod, miasto</p>
+					<input type="text" name="city">
+				</div>
+
+				<div class="rubryka">
+					<p>Ulica, nr</p>
+					<input type="text" name="street">
+				</div>
+
+				<div class="rubryka">
+					<p>Telefon</p>
+					<input type="text" name="telephone">
+				</div>
+
+				<div class="rubryka">
+					<p>Osoba kontaktowa</p>
+					<input type="text" name="person">
+				</div>
+
+
+				<button onclick="location.href='{% url "krok_2" %}';" class="dalej">DALEJ</BUTTON>
+
+			</div>
+
+		<div class="clear"></div>
+	</div>
+
+		<div class="push"></div>
+	</div>
+{% endblock %}}

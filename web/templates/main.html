@@ -1,0 +1,51 @@
+
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+<div class="wrapper">
+    <header>
+
+        <div id="top">
+
+            <div id="logowanie">
+                <button class="active">Rejestracja</button>
+                <button>Zaloguj się</button>
+            </div>
+
+            <div class="logo">
+                <a href="/"><img src="{% static "img/logo.png" %}"/></a>
+            </div>
+
+        </div>
+
+        <a href="krok_1">
+        <div class="stworz_karte">
+        <p>Stwórz karty<br /> prefabrykacji</p>
+        </div>
+        </a>
+
+    </header>
+
+    <div class="content">
+
+        <div class="krok_1 info">
+            <p>Zarejestruj lub zaloguj się</p>
+            <span class="numer">1</span>
+        </div>
+
+        <div class="krok_2 info">
+            <p>Stwórz karty prefabrykatów.</p> <p>Pdf z zamówieniem zostanie przesłany do weryfikacji.</p>
+            <span class="numer">2</span>
+        </div>
+
+        <div class="krok_3 info">
+            <p>Po poprawnej weryfikacji, zamówienie zostanie przekazane do realizacji.</p>
+            <span class="numer">3</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="push"></div>
+</div>
+{% endblock %}

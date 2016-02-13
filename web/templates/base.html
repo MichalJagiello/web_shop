@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8">
+	<meta name="Description" content="   " />
+	<meta name="Keywords" content="   " />
+	<meta name="Author" content="Arkadiusz Skibiński - strony-piaseczno.pl" />
+	<title>PipesPrefabrication</title>
+	<link rel="stylesheet" href="{% static "style.css" %}" type="text/css" media="all"  />
+	<link rel="Shortcut icon" href="images/favicon.ico" />
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,700,300italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oswald:400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+</head>
+
+
+<body>
+
+    {% block wrapper %}{% endblock %}
+
+	<footer>
+		<div class="kontakt">
+			<p>Kontakt</p>
+			<p>tel. +48 22 244 22 04</p>
+			<p>e-mail: <a href="mailto:info@dekk.pl">info@dekk.pl</a></p>
+		</div>
+
+		<div class="realizacja">
+			<p>Realizacja: <a href="http://www.strony-piaseczno.pl /">strony-piaseczno.pl</a></p>
+			<p>Copyright © 2016 DEKK. Wszystkie prawa zastrzeżone.</p>
+		</div>
+	</footer>
+
+</body>
+</html>
