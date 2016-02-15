@@ -9,8 +9,8 @@
 
 			<div id="logowanie">
 				<button class="active">Zalogowany</button>
-					<p class="login">Jan Kowalski</p>
-				<button>Wyloguj się</button>
+				<p class="login">{{ user_full_name }}</p>
+				<button onclick="location_change({% url 'django.contrib.auth.views.logout' %})">Wyloguj się</button>
 			</div>
 
 			<div class="logo">

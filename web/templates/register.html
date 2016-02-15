@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+	<div class="wrapper">
+
+
+		<div id="top_krok">
+
+			<div class="logo">
+				<a href="/"><img src="{% static "img/logo.png" %}"/></a>
+			</div>
+
+		</div>
+
+	<div class="content_krok">
+
+
+		<h3>Rejestracja</h3>
+
+			<div class="dane">
+
+                <form method="post" action="">
+                    {% csrf_token %}
+
+                    <div class="rubryka">
+                        {% if form.email.errors %}
+                            <ol>
+                            {% for error in form.email.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.email.label }}</p>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="rubryka">
+                        {% if form.first_name.errors %}
+                            <ol>
+                            {% for error in form.first_name.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.first_name.label }}</p>
+                        {{ form.first_name }}
+                    </div>
+
+                    <div class="rubryka">
+                        {% if form.last_name.errors %}
+                            <ol>
+                            {% for error in form.last_name.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.last_name.label }}</p>
+                        {{ form.last_name }}
+                    </div>
+
+                    <div class="rubryka">
+                        {% if form.password.errors %}
+                            <ol>
+                            {% for error in form.password.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.password.label }}</p>
+                        {{ form.password }}
+                    </div>
+
+                    <div class="rubryka">
+                        {% if form.password2.errors %}
+                            <ol>
+                            {% for error in form.password2.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.password2.label }}</p>
+                        {{ form.password2 }}
+                    </div>
+
+                    <button class="dalej" value="login">ZAREJESTRUJ</BUTTON>
+                </form>
+			</div>
+
+		<div class="clear"></div>
+	</div>
+
+		<div class="push"></div>
+	</div>
+
+{% endblock %}
