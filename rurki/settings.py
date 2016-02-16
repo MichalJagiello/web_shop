@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'web',
     'autoryzacja',
+    'pipes_types',
 ]
 
 MIDDLEWARE_CLASSES = [

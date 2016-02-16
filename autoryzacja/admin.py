@@ -44,9 +44,6 @@ class PipesUserChangeForm(forms.ModelForm):
         model = PipesUser
         fields = ('email', 'password', 'first_name', 'last_name', 'is_admin')
 
-    def clean_password(self):
-        return "dupa"
-
 
 class PipesUserAdmin(UserAdmin):
     #fields = ('email', 'first_name', 'last_name', 'is_admin')

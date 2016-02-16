@@ -63,6 +63,10 @@ class PipesUser(AbstractBaseUser):
 
     objects = PipesUserManager()
 
+    class Meta:
+        verbose_name = 'Użytkownik'
+        verbose_name_plural = 'Użytkownicy'
+
     def get_full_name(self):
         return ' '.join([self.first_name, self.last_name])
 
