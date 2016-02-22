@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'web',
     'autoryzacja',
     'pipes_types',
+    'projects',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -140,5 +141,7 @@ STATICFILES_DIRS = (
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = '/'
+
+POSTCODE_PATTERN = '^[0-9]{2}-[0-9]{3}$'
 
 from .local_settings import *

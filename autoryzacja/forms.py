@@ -46,7 +46,7 @@ class RegisterForm(forms.Form):
                                 error_messages=my_default_errors)
 
     def clean_email(self):
-        email = self.cleaned_data['email']
+        email = self.cleaned_data.get('email')
 
         try:
             PipesUser.objects.get(email=email)

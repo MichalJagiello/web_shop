@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.views.generic import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +9,9 @@ from django.http import HttpResponse
 
 from autoryzacja.forms import LoginForm, RegisterForm
 from autoryzacja.models import PipesUser
+
+from projects.forms import NewProjectForm
+from projects.models import Project
 
 # Create your views here.
 
@@ -23,9 +26,33 @@ class MainPageView(View):
 
 class FirstStepView(LoginRequiredMixin, View):
     login_url = '/login/'
+    form_class = NewProjectForm
+    template = 'krok_1.html'
 
     def get(self, request):
-        return render(request, 'krok_1.html', {'user_full_name': request.user.get_full_name()})
+        form = self.form_class()
+        return render(request, self.template, {'user_full_name': request.user.get_full_name(),
+                                               'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            project = Project.objects.create(user = request.user,
+                                             name = form.cleaned_data.get('name'),
+                                             city=form.cleaned_data.get('city'),
+                                             street=form.cleaned_data.get('street'),
+                                             postcode=form.cleaned_data.get('postcode'),
+                                             number=form.cleaned_data.get('number'))
+
+            request.session['project'] = project.id
+
+            return redirect('krok_2')
+
+        return render(request, self.template, {'user_full_name': request.user.get_full_name(),
+                                               'form': form})
+
 
 
 class SecondStepView(LoginRequiredMixin, View):

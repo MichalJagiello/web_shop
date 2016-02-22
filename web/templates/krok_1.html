@@ -28,38 +28,72 @@
 
 			<div class="dane">
 
-				<div class="rubryka">
-					<p>Nazwa projektu</p>
-					<input type="text" name="name">
-				</div>
+				<form method="post" action="">
+                    {% csrf_token %}
 
-				<div class="rubryka">
-					<p>Obiekt</p>
-					<input type="text" name="object">
-				</div>
+					<div class="rubryka">
+                        {% if form.name.errors %}
+                            <ol>
+                            {% for error in form.name.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.name.label }}</p>
+                        {{ form.name }}
+                    </div>
 
-				<div class="rubryka">
-					<p>Kod, miasto</p>
-					<input type="text" name="city">
-				</div>
+					<div class="rubryka">
+                        {% if form.city.errors %}
+                            <ol>
+                            {% for error in form.city.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.city.label }}</p>
+                        {{ form.city }}
+                    </div>
 
-				<div class="rubryka">
-					<p>Ulica, nr</p>
-					<input type="text" name="street">
-				</div>
+					<div class="rubryka">
+                        {% if form.street.errors %}
+                            <ol>
+                            {% for error in form.street.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.street.label }}</p>
+                        {{ form.street }}
+                    </div>
 
-				<div class="rubryka">
-					<p>Telefon</p>
-					<input type="text" name="telephone">
-				</div>
+					<div class="rubryka">
+                        {% if form.postcode.errors %}
+                            <ol>
+                            {% for error in form.postcode.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.postcode.label }}</p>
+                        {{ form.postcode }}
+                    </div>
 
-				<div class="rubryka">
-					<p>Osoba kontaktowa</p>
-					<input type="text" name="person">
-				</div>
+					<div class="rubryka">
+                        {% if form.number.errors %}
+                            <ol>
+                            {% for error in form.number.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        <p>{{ form.number.label }}</p>
+                        {{ form.number }}
+                    </div>
 
+					<button class="dalej">DALEJ</BUTTON>
 
-				<button onclick="location.href='{% url "krok_2" %}';" class="dalej">DALEJ</BUTTON>
+				</form>
 
 			</div>
 
