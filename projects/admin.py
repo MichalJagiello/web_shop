@@ -6,7 +6,7 @@ from django.contrib import admin
 
 from autoryzacja.models import PipesUser
 
-from .models import Project
+from .models import Project, Prefabricate
 
 # Register your models here.
 
@@ -48,6 +48,13 @@ class ProjectCreationForm(forms.ModelForm):
         return project
 
 
+class PrefabricateAdminInline(admin.TabularInline):
+
+    model = Prefabricate
+    list_display = ('project', 'pipe_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
+    ordering = ('project', 'index')
+
+
 class ProjectsAdmin(admin.ModelAdmin):
 
     model = Project
@@ -64,6 +71,9 @@ class ProjectsAdmin(admin.ModelAdmin):
             'fields': ('street', 'number', 'postcode', 'city')
         }),
     )
+    inlines = [
+        PrefabricateAdminInline,
+    ]
 
     def save_model(self, request, obj, form, change):
         obj.saved = True

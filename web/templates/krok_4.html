@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+	<div class="wrapper">
+
+
+		<div id="top_krok">
+
+			<div id="logowanie">
+				<button class="active">Zalogowany</button>
+				<p class="login">{{ user_full_name }}</p>
+				<button onclick="location_change({% url 'django.contrib.auth.views.logout' %})">Wyloguj się</button>
+			</div>
+
+			<div class="logo">
+				<a href="/"><img src="{% static "img/logo.png" %}"/></a>
+			</div>
+
+		</div>
+
+
+
+
+
+	<div class="content_krok">
+        <h3>Krok <span class="numeracja">4</span></h3>
+		<p>Podaj odległości pomiędzy odejściami</p>
+
+
+        <div class="dane">
+
+                        <div class="zdefiniowane">
+                        <p>wybrane oznaczenie</p>
+                        <div class="check"><p>S1</p></div>
+                        </div>
+
+                        <div class="zdefiniowane">
+                        <p>wybrana średnica</p>
+                        <div class="check"><p>DN 25 (33,7x3,2)</p></div>
+                        </div>
+
+                        <div class="zdefiniowane">
+                        <p>wybrany rodzaj</p>
+                        <div class="check"><p>cz z/s</p></div>
+                        </div>
+
+                        <div class="zdefiniowane">
+                        <p>wybrany kolor</p>
+                        <div class="check"><p>RAL 3000</p></div>
+                        </div>
+
+                        <div class="zdefiniowane">
+                        <p>wybrana ilość</p>
+                        <div class="check"><p>6</p></div>
+                        </div>
+
+
+                    <div class="clear"></div>
+                    <br /> <br />
+
+        </div>
+
+
+
+
+
+			<div class="dane">
+
+
+
+				<div class="rura rura_lewa_rowek"></div>  <div class="rura rura_prawa_owal"></div>
+				<div class="clear">	</div>
+					<div class="odejscia">
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+						<div class="lokalizacje"></div>
+					</div>
+				<div class="clear">	</div>
+
+
+
+
+
+				<div class="clear"></div>
+				<button onclick="location.href='{% url "krok_3" %}';" class="cofnij">COFNIJ</button>
+				<button class="dalej">ZAPISZ</button>
+				<button class="dalej">DRUKUJ DO PDF</button>
+				<button class="dalej">PRZEJDŹ DO DEFINIOWANIA KOLEJNEGO PREFABRYKATU</button>
+
+
+
+
+
+
+
+
+			</div>
+		</div>
+
+		<div class="push"></div>
+	</div>
+
+
+{% endblock %}

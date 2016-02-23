@@ -61,6 +61,21 @@ class SecondStepView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'krok_2.html', {'user_full_name': request.user.get_full_name()})
 
+
+class ThirdStepView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        return render(request, 'krok_3.html', {'user_full_name': request.user.get_full_name()})
+
+
+class FourthStepView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        return render(request, 'krok_4.html', {'user_full_name': request.user.get_full_name()})
+
+
 class RegistrationView(View):
 
     def get(self, request):

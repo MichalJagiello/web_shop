@@ -37,3 +37,41 @@ class PipeColor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PipeMark(models.Model):
+    name = models.CharField(max_length=16, verbose_name='Oznaczenie rury', unique=True)
+    available = models.BooleanField(default=True, verbose_name='Dostępny')
+
+    class Meta:
+        verbose_name = 'Oznaczenie rury'
+        verbose_name_plural = 'Oznaczenia rur'
+
+    def __str__(self):
+        return self.name
+
+
+class PipeLeftEnd(models.Model):
+    name = models.CharField(max_length=64, verbose_name='Nazwa zakończenia', unique=True)
+    image = models.ImageField(verbose_name='Obrazek zakończenia')
+    available = models.BooleanField(default=True, verbose_name='Dostępne')
+
+    class Meta:
+        verbose_name = 'Zakończenie rury lewe'
+        verbose_name_plural = 'Zakończenia rur lewe'
+
+    def __str__(self):
+        return self.name
+
+
+class PipeRightEnd(models.Model):
+    name = models.CharField(max_length=64, verbose_name='Nazwa zakończenia', unique=True)
+    image = models.ImageField(verbose_name='Obrazek zakończenia')
+    available = models.BooleanField(default=True, verbose_name='Dostępne')
+
+    class Meta:
+        verbose_name = 'Zakończenie rury prawe'
+        verbose_name_plural = 'Zakończenia rur prawe'
+
+    def __str__(self):
+        return self.name

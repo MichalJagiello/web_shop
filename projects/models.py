@@ -5,6 +5,8 @@ from django.db import models
 
 from autoryzacja.models import PipesUser
 
+from pipes_types.models import PipeDiameter, PipeColor, PipeType, PipeLeftEnd, PipeRightEnd, PipeMark
+
 # Create your models here.
 
 
@@ -32,3 +34,26 @@ class Project(models.Model):
 
     def __str__(self):
         return "Projekt {} użytkownika {}".format(self.name, self.user.email)
+
+
+class Prefabricate(models.Model):
+
+    project = models.ForeignKey(Project, verbose_name='Projekt')
+    pipe_mark = models.ForeignKey(PipeMark, verbose_name='Oznaczenie prefabrykatu')
+    pipe_diameter = models.ForeignKey(PipeDiameter, verbose_name='Średnica')
+    pipe_color = models.ForeignKey(PipeColor, verbose_name='Kolor', null=True)
+    pipe_type = models.ForeignKey(PipeType, verbose_name='Rodzaj rury')
+    pipe_left_end = models.ForeignKey(PipeLeftEnd, verbose_name='Zakończenie lewe')
+    pipe_right_end = models.ForeignKey(PipeRightEnd, verbose_name='Zakończenie prawe')
+    index = models.IntegerField(verbose_name='Indeks prefabrykatu w projekcie')
+    count = models.IntegerField(verbose_name='Ilość perfabrykatu')
+
+    class Meta:
+        verbose_name = 'Prefabrykat'
+        verbose_name_plural = 'Prefabrykaty'
+
+    def __repr__(self):
+        print("Prefabrykat {} projektu {} użytkownika".format(self.index, self.project.name, self.project.user.get_full_name()))
+
+    def __str__(self):
+        return "Prefabrykat {} projektu {} użytkownika".format(self.index, self.project.name, self.project.user.get_full_name())
