@@ -54,8 +54,14 @@ class ProjectCreationForm(forms.ModelForm):
 class PrefabricateAdminInline(admin.TabularInline):
 
     model = Prefabricate
-    list_display = ('project', 'pipe_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
+    fields = ('project', 'pipe_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
     ordering = ('project', 'index')
+    can_delete = False
+    readonly_fields = ('project', 'pipe_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
+
+    def get_max_num(self, request, obj=None, **kwargs):
+
+        return len(Prefabricate.objects.filter(project=obj))
 
 
 class ProjectsAdmin(admin.ModelAdmin):
@@ -72,6 +78,9 @@ class ProjectsAdmin(admin.ModelAdmin):
         }),
         ('Adres', {
             'fields': ('street', 'number', 'postcode', 'city')
+        }),
+        ('Plik', {
+            'fields': ('pdf',)
         }),
     )
     inlines = [

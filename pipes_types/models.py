@@ -21,6 +21,8 @@ class PipeDiameter(models.Model):
 class PipeType(models.Model):
     name = models.CharField(max_length=16, verbose_name='Typ rury')
     available = models.BooleanField(default=True, verbose_name='Dostępny')
+    color_allowed = models.BooleanField(default=True, verbose_name='Dostępny z kolorem')
+
 
     class Meta:
         verbose_name = 'Typ rury'
@@ -56,8 +58,9 @@ class PipeMark(models.Model):
 
 class PipeLeftEnd(models.Model):
     name = models.CharField(max_length=64, verbose_name='Nazwa zakończenia', unique=True)
-    image = models.ImageField(verbose_name='Obrazek zakończenia')
+    image = models.ImageField(verbose_name='Obrazek zakończenia', upload_to='zakonczenia_lewe')
     available = models.BooleanField(default=True, verbose_name='Dostępne')
+    pipe_image = models.ImageField(verbose_name='Obrazek zakończenia z rurą', upload_to='zakonczenia_lewe')
 
     class Meta:
         verbose_name = 'Zakończenie rury lewe'
@@ -69,8 +72,9 @@ class PipeLeftEnd(models.Model):
 
 class PipeRightEnd(models.Model):
     name = models.CharField(max_length=64, verbose_name='Nazwa zakończenia', unique=True)
-    image = models.ImageField(verbose_name='Obrazek zakończenia')
+    image = models.ImageField(verbose_name='Obrazek zakończenia', upload_to='zakonczenia_prawe')
     available = models.BooleanField(default=True, verbose_name='Dostępne')
+    pipe_image = models.ImageField(verbose_name='Obrazek zakończenia z rurą', upload_to='zakonczenia_prawe')
 
     class Meta:
         verbose_name = 'Zakończenie rury prawe'
@@ -78,3 +82,7 @@ class PipeRightEnd(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PipeOutflow(models.Model):
+    pass

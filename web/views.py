@@ -1,17 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect
+from django.core.exceptions import SuspiciousOperation
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from django.views.generic import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.http import Http404
+from django.core.files.base import ContentFile
 
 from autoryzacja.forms import LoginForm, RegisterForm
 from autoryzacja.models import PipesUser
 
-from projects.forms import NewProjectForm
-from projects.models import Project
+from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm
+from projects.models import Project, Prefabricate
+
+from pipes_types.forms import UpdateColorSelectForm
+from pipes_types.models import PipeType
+
+import pdf_generator
 
 # Create your views here.
 
@@ -27,26 +35,63 @@ class MainPageView(View):
 class FirstStepView(LoginRequiredMixin, View):
     login_url = '/login/'
     form_class = NewProjectForm
+    edit_form_class = EditProjectForm
     template = 'krok_1.html'
 
     def get(self, request):
-        form = self.form_class()
+        session_project = request.session.get('project', None)
+        if session_project is not None:
+            try:
+                project = Project.objects.get(id=session_project)
+            except Project.DoesNotExist:
+                form = self.form_class()
+                del request.session['project']
+                if request.session.has_key('prefabricate_index'):
+                    del request.session['prefabricate_index']
+                if request.session.has_key('prefabricate'):
+                    del request.session['prefabricate']
+            else:
+                form = self.form_class(initial={
+                    'city': project.city,
+                    'name': project.name,
+                    'number': project.number,
+                    'postcode': project.postcode,
+                    'street': project.street,
+                })
+        else:
+            form = self.form_class()
         return render(request, self.template, {'user_full_name': request.user.get_full_name(),
                                                'form': form})
 
     def post(self, request):
-        form = self.form_class(request.POST)
+
+        session_project = request.session.get('project', None)
+        if session_project is None:
+            form = self.form_class(request.POST)
+        else:
+            form = self.edit_form_class(request.POST)
 
         if form.is_valid():
 
-            project = Project.objects.create(user = request.user,
-                                             name = form.cleaned_data.get('name'),
-                                             city=form.cleaned_data.get('city'),
-                                             street=form.cleaned_data.get('street'),
-                                             postcode=form.cleaned_data.get('postcode'),
-                                             number=form.cleaned_data.get('number'))
+            if session_project is not None:
+                project = Project.objects.get(id=session_project)
+                project.name = form.cleaned_data.get('name')
+                project.city = form.cleaned_data.get('city')
+                project.street = form.cleaned_data.get('street')
+                project.postcode = form.cleaned_data.get('postcode')
+                project.number = form.cleaned_data.get('number')
 
-            request.session['project'] = project.id
+                project.save()
+
+            else:
+                project = Project.objects.create(user = request.user,
+                                                 name = form.cleaned_data.get('name'),
+                                                 city=form.cleaned_data.get('city'),
+                                                 street=form.cleaned_data.get('street'),
+                                                 postcode=form.cleaned_data.get('postcode'),
+                                                 number=form.cleaned_data.get('number'))
+
+                request.session['project'] = project.id
 
             return redirect('krok_2')
 
@@ -57,23 +102,160 @@ class FirstStepView(LoginRequiredMixin, View):
 
 class SecondStepView(LoginRequiredMixin, View):
     login_url = '/login/'
+    template = 'krok_2.html'
+    form_class = AddPrefabricateForm
 
     def get(self, request):
-        return render(request, 'krok_2.html', {'user_full_name': request.user.get_full_name()})
+        session_prefabricate = request.session.get('prefabricate', None)
+
+        if session_prefabricate:
+            try:
+                prefabricate = Prefabricate.objects.get(id=session_prefabricate)
+            except Prefabricate.DoesNotExist:
+                del request.session['prefabricate']
+                form = self.form_class()
+            else:
+                form = self.form_class(initial={'diameter': prefabricate.pipe_diameter,
+                                                'type': prefabricate.pipe_type,
+                                                'mark': prefabricate.pipe_mark,
+                                                'color': prefabricate.pipe_color,
+                                                'left_end': prefabricate.pipe_left_end,
+                                                'right_end': prefabricate.pipe_right_end,
+                                                'quantity': prefabricate.count})
+        else:
+            form = self.form_class()
+        return render(request, self.template, {'user_full_name': request.user.get_full_name(),
+                                               'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            session_prefabricate = request.session.get('prefabricate', None)
+
+            if session_prefabricate:
+                prefabricate = Prefabricate.objects.get(id=session_prefabricate)
+                prefabricate.pipe_diameter = form.cleaned_data.get('diameter')
+                prefabricate.pipe_type = form.cleaned_data.get('type')
+                prefabricate.pipe_mark = form.cleaned_data.get('mark')
+                prefabricate.pipe_color = form.cleaned_data.get('color')
+                prefabricate.pipe_left_end = form.cleaned_data.get('left_end')
+                prefabricate.pipe_right_end = form.cleaned_data.get('right_end')
+                prefabricate.count = form.cleaned_data.get('quantity')
+                prefabricate.save()
+            else:
+                project = Project.objects.get(id=request.session.get('project'))
+                prefabricate_index = request.session.get('prefabricate_index', 0)
+                prefabricate = Prefabricate.objects.create(project=project,
+                                                           pipe_diameter=form.cleaned_data.get('diameter'),
+                                                           pipe_type=form.cleaned_data.get('type'),
+                                                           pipe_mark=form.cleaned_data.get('mark'),
+                                                           pipe_color=form.cleaned_data.get('color'),
+                                                           pipe_left_end=form.cleaned_data.get('left_end'),
+                                                           pipe_right_end=form.cleaned_data.get('right_end'),
+                                                           count=form.cleaned_data.get('quantity'),
+                                                           index=prefabricate_index)
+                request.session['prefabricate'] = prefabricate.id
+
+            return redirect('krok_3')
+
+        return render(request, self.template, {'user_full_name': request.user.get_full_name(),
+                                               'form': form})
 
 
 class ThirdStepView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request):
-        return render(request, 'krok_3.html', {'user_full_name': request.user.get_full_name()})
+        prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
+        return render(request, 'krok_3.html', {'user_full_name': request.user.get_full_name(),
+                                               'prefabricate': prefabricate})
 
 
 class FourthStepView(LoginRequiredMixin, View):
     login_url = '/login/'
 
     def get(self, request):
-        return render(request, 'krok_4.html', {'user_full_name': request.user.get_full_name()})
+        prefabricate_id = request.session.get('prefabricate', None)
+        if prefabricate_id is None:
+            raise Http404("Project is saved")
+        prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
+        return render(request, 'krok_4.html', {'user_full_name': request.user.get_full_name(),
+                                               'prefabricate': prefabricate})
+
+class NextPrefabricateView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        project = Project.objects.get(id=request.session.get('project'))
+        request.session['prefabricate_index'] = len(Prefabricate.objects.filter(project=project))
+        request.session['prefabricate'] = None
+        return redirect('krok_2')
+
+
+class DeletePrefabricateView(LoginRequiredMixin, View):
+
+    def get(self, request, prefabricate_index):
+        project = Project.objects.get(id=request.session.get('project'))
+        Prefabricate.objects.get(project=project, index=prefabricate_index).delete()
+        for prefabricate in Prefabricate.objects.filter(project=project, index__gt=prefabricate_index):
+            prefabricate.index = prefabricate.index - 1
+            prefabricate.save()
+        return redirect('zapisz_projekt')
+
+class MultiplyPrefabricateView(LoginRequiredMixin, View):
+
+    def get(self, request, prefabricate_index):
+        project = Project.objects.get(id=request.session.get('project'))
+        prefabricate = Prefabricate.objects.get(project=project, index=prefabricate_index)
+        Prefabricate.objects.create(project=project,
+                                    pipe_diameter=prefabricate.pipe_diameter,
+                                    pipe_type=prefabricate.pipe_type,
+                                    pipe_mark=prefabricate.pipe_mark,
+                                    pipe_color=prefabricate.pipe_color,
+                                    pipe_left_end=prefabricate.pipe_left_end,
+                                    pipe_right_end=prefabricate.pipe_right_end,
+                                    count=prefabricate.count,
+                                    index=len(Prefabricate.objects.filter(project=project)))
+        return redirect('zapisz_projekt')
+
+class EditPrefabricateView(LoginRequiredMixin, View):
+
+    def get(self, request, prefabricate_index):
+        project = Project.objects.get(id=request.session.get('project'))
+        prefabricate = Prefabricate.objects.get(project=project, index=prefabricate_index)
+        request.session['prefabricate_index'] = prefabricate_index
+        request.session['prefabricate'] = prefabricate.id
+        return redirect('krok_2')
+
+
+class SaveProjectView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        project_obj = Project.objects.get(id=request.session.get('project'))
+
+        prefabricates = Prefabricate.objects.filter(project=project_obj).order_by('index')
+
+        return render(request, 'krok_5.html', {'user_full_name': request.user.get_full_name(),
+                                               'prefabricates': prefabricates})
+
+
+class FinishProjectView(LoginRequiredMixin, View):
+
+    def get(self, request):
+        if request.session.has_key('project'):
+            project = request.session.get('project')
+            project_obj = Project.objects.get(id=project)
+            project_obj.saved = True
+            project_obj.pdf.save('.'.join([project_obj.name, 'pdf']), ContentFile(pdf_generator.generate(project_obj.name)))
+            project_obj.save()
+        if request.session.has_key('prefabricate_index'):
+            del request.session['prefabricate_index']
+        if request.session.has_key('prefabricate'):
+            del request.session['prefabricate']
+        if request.session.has_key('project'):
+            del request.session['project']
+
+        return render(request, 'project_created.html', {'user_full_name': request.user.get_full_name()})
 
 
 class RegistrationView(View):
@@ -105,3 +287,23 @@ class ThanksView(View):
 
     def get(self, request):
         return render(request, 'thanks.html')
+
+
+class ColorFilterView(View):
+
+    form_class = UpdateColorSelectForm
+
+    def get(self, request):
+        form_class = UpdateColorSelectForm(request.GET)
+
+        if not form_class.is_valid():
+            raise SuspiciousOperation("Invalid form")
+
+        pipe_type_id = form_class.cleaned_data.get('type_id')
+        if pipe_type_id is None:
+            return JsonResponse({'error': False,
+                                 'color_enabled': True})
+
+        pipe_type = get_object_or_404(PipeType, id=pipe_type_id)
+        return  JsonResponse({'error': False,
+                              'color_enabled': pipe_type.color_allowed})

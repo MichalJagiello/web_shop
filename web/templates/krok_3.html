@@ -32,27 +32,34 @@
 
 					<div class="zdefiniowane">
 					<p>wybrane oznaczenie</p>
-					<div class="check"><p>S1</p></div>
+					<div class="check"><p>{{ prefabricate.pipe_mark }}</p></div>
 					</div>
 
 					<div class="zdefiniowane">
 					<p>wybrana średnica</p>
-					<div class="check"><p>DN 25 (33,7x3,2)</p></div>
+					<div class="check"><p>{{ prefabricate.pipe_diameter }}</p></div>
 					</div>
 
 					<div class="zdefiniowane">
 					<p>wybrany rodzaj</p>
-					<div class="check"><p>cz z/s</p></div>
+					<div class="check"><p>{{ prefabricate.pipe_type }}</p></div>
 					</div>
 
 					<div class="zdefiniowane">
 					<p>wybrany kolor</p>
-					<div class="check"><p>RAL 3000</p></div>
+					<div class="check">
+						<p>
+							{% if prefabricate.pipe_color %}
+								{{ prefabricate.pipe_color }}
+							{% else %}
+								---------
+							{% endif %}
+						</p></div>
 					</div>
 
 					<div class="zdefiniowane">
 					<p>wybrana ilość</p>
-					<div class="check"><p>6</p></div>
+					<div class="check"><p>{{ prefabricate.count }}</p></div>
 					</div>
 
 
@@ -64,31 +71,35 @@
 			<div class="dane">
 
 
-				<p>Wskaż kursorem miejsce i wybierz z listy typ odejścia</p><br />
-				<div class="rura rura_lewa_rowek"></div>  <div class="rura rura_prawa_owal"></div>
-				<div class="clear">	</div>
-					<div class="odejscia">
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-					</div>
+				<p class="wskazowka">Wskaż kursorem miejsce i wybierz z listy typ odejścia</p><br />
+				<div class="model">
+					<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
+					<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
+					<div class="clear">	</div>
+						<div class="odejscia">
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+							<div class="lokalizacje"></div>
+						</div>
+				</div>
 
 				<div class="clear"></div>
 				<button onclick="location.href='{% url "krok_2" %}';" class="cofnij">COFNIJ</button>

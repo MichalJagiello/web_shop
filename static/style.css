@@ -20,10 +20,10 @@ height: 100%;
 min-height: 100%;
 height: auto !important;
 height: 100%;
-margin: 0 auto -95px; /* dolny margines = minusowa wartoć wysokoci stopki wliczajšc w to ewentualny padding stopki */
+margin: 0 auto -95px;
 }
 .push {
-height: 95px; /*klasa .push musi mieć tę samš wysokoć co klasa .footer */
+height: 95px;
 }
 
 header{
@@ -259,6 +259,13 @@ font-size: 22px;
 
 .dane{
 margin-top: 30px;
+padding-bottom: 40px;
+}
+
+.dane_model{
+width: 850px;
+margin-left: auto;
+margin-right: auto;
 }
 
 .dane h4{
@@ -350,7 +357,7 @@ color: silver;
 background-color: #f1f1f1;
 float: left;
 width: 285px;
-height: 230px;
+height: 260px;
 border: 2px solid #fff;
 outline: 10px solid #f1f1f1;
 margin: 30px;
@@ -379,7 +386,8 @@ padding: 3px 10px;
   border-radius: 15px;
   position: absolute;
   left: 125px;
-  bottom: -22px;
+  bottom: 15px;
+  position: absolute;
   font-size: 20px;
   -webkit-transition: 0.2s ease;
 -o-transition: 0.2s ease;
@@ -387,7 +395,7 @@ transition: 0.2s ease;
 }
 
 .info:hover .numer{
-bottom: -5px;
+  bottom: 5px;
 }
 
 .info:hover {
@@ -433,11 +441,15 @@ font-weight: bold;
 width: 50%;
 height: 45px;
 float: left;
-margin: 40px 0px 20px 0px;
+margin: 20px 0px 20px 0px;
+}
+
+.wskazowka{
+padding: 0px!important;
+
 }
 
 .rura_lewa{
-background-image: url(img/rura.png);
 background-repeat: no-repeat;
 background-position: center right;
 }
@@ -455,7 +467,6 @@ background-position: center right;
 }
 
 .rura_prawa{
-background-image: url(img/rura.png);
 background-repeat: no-repeat;
 background-position: center left;
 }
@@ -484,7 +495,10 @@ float: right;
 .zakonczenie_lewe li, .zakonczenie_prawe li{
 list-style-type: none;
 border-bottom: 1px #ccc dotted;
-padding: 5px 10px;
+border-top: 1px #fff dotted;
+border-left: 1px #fff dotted;
+border-right: 1px #fff dotted;
+padding: 8px 10px;
 margin-top: 5px;
   -webkit-transition: 0.2s ease;
 -o-transition: 0.2s ease;
@@ -499,6 +513,10 @@ margin-top: 25px;
 border: 1px #ccc dotted;
 }
 
+.zakonczenie_lewe li:active, .zakonczenie_prawe li:active{
+border: 1px red solid;
+}
+
 .zakonczenie_lewe ul, .zakonczenie_prawe ul{
 
 }
@@ -511,21 +529,76 @@ padding: 5px 25px;
 
 
 .odejscia{
-
-height: 46px;
-width: 72%;
+height: 80px;
+width: 805px;
 margin-left: auto;
 margin-right: auto;
-margin-top: -68px;
-position: relative;
+position: absolute;
+top: 3px;
+left: 150px;
 }
 
 .lokalizacje{
-width: 5%;
-height: 46px;
+width: 38px;
+height: 80px;
 float: left;
+display: inline;
+cursor: pointer;
 }
 
 .lokalizacje:hover{
-outline: solid red 1px;
+border: solid red 1px;
+background-position: -1px -1px;
+margin-right: -2px;
+}
+
+.model{
+
+clear: both;
+margin-top: 20px;
+position: relative;
+max-width: 100%;
+margin-bottom: 20px;
+}
+
+.odejscie_tyl{
+background-image: url(img/tyl.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_przod{
+background-image: url(img/przod.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol{
+background-image: url(img/dol.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora{
+background-image: url(img/gora.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+
+
+@media all and (max-width: 1050px) {
+
+.info{
+float: none;
+margin: 0 auto 50px auto;
+width: 70%;
+
+}
+
+.numer{
+left: 50%;
+margin-left: -15px;
+}
+
 }

@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,4 +25,4 @@ urlpatterns = [
     url(r'', include('web.urls')),
     url(r'^login/', auth_views.login, {'template_name': 'login.html'}),
     url(r'^logout/', auth_views.logout, {'next_page': '/'}),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,6 +2,9 @@
 {% load staticfiles %}
 
 {% block wrapper %}
+
+    <script src="{% static 'color_enable_get.js' %}"></script>
+
 	<div class="wrapper">
 
 
@@ -19,97 +22,75 @@
 
 		</div>
 
-
-
-
-
 	<div class="content_krok">
-
 
 		<h3>Krok <span class="numeracja">2</span></h3>
 		<p>Wprowadź dane podstawowe prefabrykatu</p>
 
 			<div class="dane poziome">
 
-				<div class="lista_wyboru">
-					<select name="oznaczenie">
-						<option>S1</option>
-						<option>S2</option>
-						<option>S3</option>
-						<option>S4</option>
-					</select>
-					<p>oznaczenie prefabrykatu</p>
-				</div>
+				<form method="post" action="">
+                    {% csrf_token %}
 
-				<div class="lista_wyboru">
-					<select name="srednica">
-						<option>DN 25 (33,7x3,2)</option>
-						<option>DN 25 (33,7x3,6)</option>
-						<option>DN 32 (42,4x2,6)</option>
-						<option>DN 32 (42,4x2,9)</option>
-						<option>DN 32 (42,4x3,2)</option>
-						<option>DN 32 (42,4x3,6)</option>
-						<option>DN 40 (48,3x2,6)</option>
-						<option>DN 40 (48,3x2,9)</option>
-						<option>DN 40 (48,3x3,2)</option>
-						<option>DN 40 (48,3x4,0)</option>
-						<option>DN 50 (60,3x2,6)</option>
-						<option>DN 50 (60,3x2,9)</option>
-						<option>DN 50 (60,3x3,6)</option>
-						<option>DN 50 (60,3x4,0)</option>
-						<option>DN 65 (76,1x2,6)</option>
-						<option>DN 65 (76,1x3,2)</option>
-						<option>DN 80 (88,9x2,9)</option>
-						<option>DN 80 (88,9x3,2)</option>
-						<option>DN 100 (114,3x3,2)</option>
-						<option>DN 150 (168,3x3,6)</option>
-						<option>DN 150 (168,3x4,0)</option>
-						<option>DN 200 (219,1x5,0)</option>
-						<option>DN 200 (219,1x6,3)</option>
-						<option>DN 250 (273,0x5,0)</option>
-					</select>
-					<p>średnica</p>
-				</div>
+					<div class="lista_wyboru">
+						{% if form.mark.errors %}
+                            <ol>
+                            {% for error in form.mark.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        {{ form.mark }}
+                        <p>{{ form.mark.label }}</p>
+					</div>
 
-				<div class="lista_wyboru">
-					<select name="rodzaj">
-						<option>cz z/s</option>
-						<option>cz b/s</option>
-						<option>oc z/s</option>
-						<option>oc z/s</option>
-					</select>
-					<p>rodzaj rury</p>
-				</div>
+                    <div class="lista_wyboru">
+                        {% if form.diameter.errors %}
+                            <ol>
+                            {% for error in form.diameter.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        {{ form.diameter }}
+                        <p>{{ form.diameter.label }}</p>
+                    </div>
 
-				<div class="lista_wyboru">
-					<select name="kolor">
-						<option>RAL 3000</option>
-						<option>-</option>
+                    <div class="lista_wyboru">
+                        {% if form.type.errors %}
+                            <ol>
+                            {% for error in form.type.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        {{ form.type }}
+                        <p>{{ form.type.label }}</p>
+                    </div>
 
-					</select>
-					<p>kolor</p>
-				</div>
+                    <div class="lista_wyboru">
+                        {% if form.color.errors %}
+                            <ol>
+                            {% for error in form.color.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        {{ form.color }}
+                        <p>{{ form.color.label }}</p>
+                    </div>
 
-				<div class="lista_wyboru">
-					<select name="ilosc">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-						<option>10</option>
-						<option>11</option>
-						<option>12</option>
-						<option>13</option>
-						<option>14</option>
-						<option>15</option>
-					</select>
-					<p>ilość</p>
-				</div>
+                    <div class="lista_wyboru">
+                        {% if form.quantity.errors %}
+                            <ol>
+                            {% for error in form.quantity.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+                        {{ form.quantity }}
+                        <p>{{ form.quantity.label }}</p>
+                    </div>
 				<div class="clear"></div>
 				<br /><br />
 
@@ -122,31 +103,69 @@
 				<div class="clear">	</div>
 
 
-				<div class="zakonczenie_lewe">
-					<p class="wybierz">wybierz z listy</p>
-					<ul>
-						<li id="proste"><img src="{% static "img/zakonczenie_3.jpg" %}" /> </li>
-						<li id="owal"><img src="{% static "img/zakonczenie_2-l.jpg" %}"/> </li>
-						<li id="rowek"><img src="{% static "img/zakonczenie_1-l.jpg" %}" /> </li>
-					</ul>
+				<!-- <div class="zakonczenie_lewe">
+					<p class="wybierz">Wybierz z listy</p>
+                    {% if form.left_end.errors %}
+                        <ol>
+                            {% for error in form.left_end.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    <ul>
+                        {% for left_end in form.left_end.field.queryset %}
+                            <li><img src="{{ left_end.image.url }}"/>{{ left_end }}
+                            <input id="id_left_end_0" name="left_end" value="" type="radio"></li>
+                        {% endfor %}
+                    </ul>
 				</div>
 
 				<div class="zakonczenie_prawe">
-					<p class="wybierz">wybierz z listy</p>
-					<ul>
-						<li id="proste"><img src="{% static "img/zakonczenie_3.jpg" %}" /> </li>
-						<li id="owal"><img src="{% static "img/zakonczenie_2.jpg" %}" /> </li>
-						<li id="rowek"><img src="{% static "img/zakonczenie_1.jpg" %}" /> </li>
-					</ul>
+					<p class="wybierz">Wybierz z listy</p>
+                    {% if form.right_end.errors %}
+                        <ol>
+                            {% for error in form.right_end.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    <ul>
+                        {% for right_end in form.right_end.field.queryset %}
+                            <li><img src="{{ right_end.image.url }}"/></li>
+                        {% endfor %}
+                    </ul>
+				</div> -->
+
+                <div class="zakonczenie_lewe">
+					<p class="wybierz">Wybierz z listy</p>
+                    {% if form.left_end.errors %}
+                        <ol>
+                            {% for error in form.left_end.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    {{ form.left_end }}
 				</div>
 
+                <div class="zakonczenie_prawe">
+					<p class="wybierz">Wybierz z listy</p>
+                    {% if form.right_end.errors %}
+                        <ol>
+                            {% for error in form.right_end.errors %}
+                                <strong>{{ error|escape }}</strong>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+                    {{ form.right_end }}
+				</div>
 
 				<div class="clear"></div>
 				<!-- <button onclick="location.href='{% url "krok_1" %}';" class="cofnij">COFNIJ</button> -->
 				<button onclick="location.href='{% url "krok_3" %}';" class="dalej">DALEJ</button>
 
 
-
+			</form>
 
 
 			</div>

@@ -26,13 +26,14 @@ class Project(models.Model):
                                                            message="Podaj kod pocztowy we właściwym"
                                                                    "formacie, np. 00-000")])
     number = models.CharField(max_length=24, verbose_name='Numer')
+    pdf = models.FileField(verbose_name='Plik projektu', null=True, upload_to='projects_files')
 
     class Meta:
         verbose_name = 'Projekt'
         verbose_name_plural = 'Projekty'
 
-    def __repr__(self):
-        print("Projekt {} użytkownika {}".format(self.name, self.user.email))
+    #def __repr__(self):
+    #    print("Projekt {} użytkownika {}".format(self.name, self.user.email))
 
     def __str__(self):
         return "Projekt {} użytkownika {}".format(self.name, self.user.email)
@@ -54,8 +55,8 @@ class Prefabricate(models.Model):
         verbose_name = 'Prefabrykat'
         verbose_name_plural = 'Prefabrykaty'
 
-    def __repr__(self):
-        print("Prefabrykat {} projektu {} użytkownika".format(self.index, self.project.name, self.project.user.get_full_name()))
+    #def __repr__(self):
+    #    print("Prefabrykat {} projektu {} użytkownika".format(self.index + 1, self.project.name, self.project.user.get_full_name()))
 
     def __str__(self):
-        return "Prefabrykat {} projektu {} użytkownika".format(self.index, self.project.name, self.project.user.get_full_name())
+        return "Prefabrykat {} projektu {} użytkownika".format(self.index + 1, self.project.name, self.project.user.get_full_name())
