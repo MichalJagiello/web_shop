@@ -15,7 +15,8 @@ from web.views import MainPageView,\
                       DeletePrefabricateView, \
                       EditPrefabricateView, \
                       MultiplyPrefabricateView, \
-                      ColorFilterView
+                      ColorFilterView, \
+                      OutflowsManipulateView
 
 urlpatterns = [
     url(r'^$', MainPageView.as_view(), name='main'),
@@ -32,5 +33,6 @@ urlpatterns = [
     url(r'register/$', RegistrationFormView.as_view(), name='registration'),
     url(r'thanks/$', ThanksView.as_view(), name='registation_thanks'),
 
-    url(r'^krok_2/filter_colors/$', ColorFilterView.as_view(), name='filter_colors')
+    url(r'^krok_2/filter_colors/$', ColorFilterView.as_view(), name='filter_colors'),
+    url(r'^krok_3/outflow/$', OutflowsManipulateView.as_view(), name='outflows_manipulate'),
 ]

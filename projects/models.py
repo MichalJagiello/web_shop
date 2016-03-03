@@ -7,7 +7,7 @@ from django.db import models
 
 from autoryzacja.models import PipesUser
 
-from pipes_types.models import PipeDiameter, PipeColor, PipeType, PipeLeftEnd, PipeRightEnd, PipeMark
+from pipes_types.models import PipeDiameter, PipeColor, PipeType, PipeLeftEnd, PipeRightEnd, PipeMark, PipeOutflow
 
 # Create your models here.
 
@@ -60,3 +60,10 @@ class Prefabricate(models.Model):
 
     def __str__(self):
         return "Prefabrykat {} projektu {} użytkownika".format(self.index + 1, self.project.name, self.project.user.get_full_name())
+
+
+class PrefabricateOutflow(models.Model):
+
+    prefabricate = models.ForeignKey(Prefabricate, verbose_name='Prefabrykat')
+    outflow = models.ForeignKey(PipeOutflow, verbose_name='Odejście')
+    index = models.IntegerField(verbose_name='Indeks')

@@ -8,8 +8,8 @@ from django.conf import settings
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
-from projects.models import Project
-from pipes_types.models import PipeMark, PipeRightEnd, PipeLeftEnd, PipeColor, PipeDiameter, PipeType
+from projects.models import Project, Prefabricate
+from pipes_types.models import PipeMark, PipeRightEnd, PipeLeftEnd, PipeColor, PipeDiameter, PipeType, PipeOutflow
 
 
 class EditProjectForm(forms.Form):
@@ -93,3 +93,46 @@ class AddPrefabricateForm(forms.Form):
 
         if not type.color_allowed and color:
             self.add_error('type', 'Dla danego typy rury kolor jest niedostępny')
+
+
+class OutflowManipulateFormAdd(forms.Form):
+
+    prefabricate_id = forms.IntegerField()
+    outflow_id = forms.IntegerField()
+    index = forms.IntegerField()
+
+    def clean_prefabricate_id(self):
+        prefabricate_id = self.cleaned_data.get('prefabricate_id')
+
+        try:
+            Prefabricate.objects.get(id=prefabricate_id)
+        except Prefabricate.DoesNotExist:
+            raise forms.ValidationError("Prefabrykat nie istnieje")
+        return prefabricate_id
+
+    def clean_outflow_id(self):
+        outflow_id = self.cleaned_data.get('outflow_id')
+
+        try:
+            outflow = PipeOutflow.objects.get(id=outflow_id)
+        except PipeOutflow.DoesNotExist:
+            raise forms.ValidationError("Odejście nie istnieje")
+
+        if not outflow.available:
+            raise forms.ValidationError("Odejście nie dostępne")
+        return outflow_id
+
+
+class OutflowManipulateFormDelete(forms.Form):
+
+    prefabricate_id = forms.IntegerField()
+    index = forms.IntegerField()
+
+    def clean_prefabricate_id(self):
+        prefabricate_id = self.cleaned_data.get('prefabricate_id')
+
+        try:
+            Prefabricate.objects.get(id=prefabricate_id)
+        except Prefabricate.DoesNotExist:
+            raise forms.ValidationError("Prefabrykat nie istnieje")
+        return prefabricate_id

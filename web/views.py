@@ -9,15 +9,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, JsonResponse
 from django.http import Http404
 from django.core.files.base import ContentFile
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 from autoryzacja.forms import LoginForm, RegisterForm
 from autoryzacja.models import PipesUser
 
-from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm
-from projects.models import Project, Prefabricate
+from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete
+from projects.models import Project, Prefabricate, PrefabricateOutflow
 
 from pipes_types.forms import UpdateColorSelectForm
-from pipes_types.models import PipeType
+from pipes_types.models import PipeType, PipeOutflow
 
 import pdf_generator
 
@@ -168,8 +170,12 @@ class ThirdStepView(LoginRequiredMixin, View):
 
     def get(self, request):
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
+        outflows = PipeOutflow.objects.filter(available=True)
+        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
         return render(request, 'krok_3.html', {'user_full_name': request.user.get_full_name(),
-                                               'prefabricate': prefabricate})
+                                               'prefabricate': prefabricate,
+                                               'outflows': outflows,
+                                               'prefabricate_outflows': prefabricate_outflows})
 
 
 class FourthStepView(LoginRequiredMixin, View):
@@ -196,7 +202,10 @@ class DeletePrefabricateView(LoginRequiredMixin, View):
 
     def get(self, request, prefabricate_index):
         project = Project.objects.get(id=request.session.get('project'))
-        Prefabricate.objects.get(project=project, index=prefabricate_index).delete()
+        prefabricate = Prefabricate.objects.get(project=project, index=prefabricate_index)
+        for prefabricate_outflow in PrefabricateOutflow.objects.filter(prefabricate=prefabricate):
+            prefabricate_outflow.delete()
+        prefabricate.delete()
         for prefabricate in Prefabricate.objects.filter(project=project, index__gt=prefabricate_index):
             prefabricate.index = prefabricate.index - 1
             prefabricate.save()
@@ -207,15 +216,19 @@ class MultiplyPrefabricateView(LoginRequiredMixin, View):
     def get(self, request, prefabricate_index):
         project = Project.objects.get(id=request.session.get('project'))
         prefabricate = Prefabricate.objects.get(project=project, index=prefabricate_index)
-        Prefabricate.objects.create(project=project,
-                                    pipe_diameter=prefabricate.pipe_diameter,
-                                    pipe_type=prefabricate.pipe_type,
-                                    pipe_mark=prefabricate.pipe_mark,
-                                    pipe_color=prefabricate.pipe_color,
-                                    pipe_left_end=prefabricate.pipe_left_end,
-                                    pipe_right_end=prefabricate.pipe_right_end,
-                                    count=prefabricate.count,
-                                    index=len(Prefabricate.objects.filter(project=project)))
+        prefabricate_copy = Prefabricate.objects.create(project=project,
+                                                        pipe_diameter=prefabricate.pipe_diameter,
+                                                        pipe_type=prefabricate.pipe_type,
+                                                        pipe_mark=prefabricate.pipe_mark,
+                                                        pipe_color=prefabricate.pipe_color,
+                                                        pipe_left_end=prefabricate.pipe_left_end,
+                                                        pipe_right_end=prefabricate.pipe_right_end,
+                                                        count=prefabricate.count,
+                                                        index=len(Prefabricate.objects.filter(project=project)))
+        for prefabricate_outflow in PrefabricateOutflow.objects.filter(prefabricate=prefabricate):
+            PrefabricateOutflow.objects.create(prefabricate=prefabricate_copy,
+                                               outflow=prefabricate_outflow.outflow,
+                                               index=prefabricate_outflow.index)
         return redirect('zapisz_projekt')
 
 class EditPrefabricateView(LoginRequiredMixin, View):
@@ -305,5 +318,52 @@ class ColorFilterView(View):
                                  'color_enabled': True})
 
         pipe_type = get_object_or_404(PipeType, id=pipe_type_id)
-        return  JsonResponse({'error': False,
-                              'color_enabled': pipe_type.color_allowed})
+        return JsonResponse({'error': False,
+                             'color_enabled': pipe_type.color_allowed})
+
+
+class OutflowsManipulateView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(OutflowsManipulateView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        form = OutflowManipulateFormAdd(request.GET)
+
+        if not form.is_valid():
+            print(form.errors)
+            raise SuspiciousOperation("Invalid form")
+
+        prefabricate = Prefabricate.objects.get(id=form.cleaned_data.get('prefabricate_id'))
+        outflow = PipeOutflow.objects.get(id=form.cleaned_data.get('outflow_id'))
+        index = form.cleaned_data.get('index')
+
+        try:
+            pref_outflow = PrefabricateOutflow.objects.get(prefabricate=prefabricate,
+                                                           index=index)
+            pref_outflow.outflow = outflow
+            pref_outflow.save()
+        except PrefabricateOutflow.DoesNotExist:
+            PrefabricateOutflow.objects.create(prefabricate=prefabricate,
+                                               outflow=outflow,
+                                               index=index)
+
+        return HttpResponse()
+
+    def delete(self, request):
+        form = OutflowManipulateFormDelete(request.GET)
+
+        if not form.is_valid():
+            raise SuspiciousOperation("Invalid form")
+
+        prefabricate = Prefabricate.objects.get(id=form.cleaned_data.get('prefabricate_id'))
+        index = form.cleaned_data.get('index')
+
+        try:
+            PrefabricateOutflow.objects.get(prefabricate=prefabricate,
+                                            index=index).delete()
+        except PrefabricateOutflow.DoesNotExist:
+            raise SuspiciousOperation("Outflow not exists")
+
+        return HttpResponse()

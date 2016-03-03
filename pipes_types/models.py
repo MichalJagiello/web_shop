@@ -85,4 +85,14 @@ class PipeRightEnd(models.Model):
 
 
 class PipeOutflow(models.Model):
-    pass
+    name = models.CharField(max_length=64, verbose_name='Nazwa odejścia', unique=True)
+    image = models.ImageField(verbose_name='Obrazek odejścia', upload_to='odejscia')
+    available = models.BooleanField(default=True, verbose_name='Dostępne')
+    css_class = models.CharField(verbose_name='Klasa css', max_length=64)
+
+    class Meta:
+        verbose_name = 'Odejście'
+        verbose_name_plural = 'Odejścia'
+
+    def __str__(self):
+        return self.name

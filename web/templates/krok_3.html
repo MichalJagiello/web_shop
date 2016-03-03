@@ -2,6 +2,9 @@
 {% load staticfiles %}
 
 {% block wrapper %}
+
+    <script src="{% static 'outflow_select.js' %}"></script>
+
 	<div class="wrapper">
 
 
@@ -77,31 +80,224 @@
 					<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
 					<div class="clear">	</div>
 						<div class="odejscia">
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
-							<div class="lokalizacje"></div>
+							<div class="lokalizacje" id="0">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 0, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 0)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="1">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 1, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 1)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="2">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 2, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 2)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="3">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 3, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 3)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="4">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 4, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 4)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="5">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 5, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 5)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="6">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 6, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 6)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="7">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 7, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 7)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="8">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 8, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 8)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="9">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 9, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 9)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="10">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 10, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 10)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="11">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 11, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 11)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="12">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 12, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 12)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="13">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 13, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 13)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="14">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 14, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 14)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="15">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 15, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 15)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="16">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 16, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 16)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="17">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 17, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 17)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="18">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 18, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 18)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="19">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 19, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 19)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="lokalizacje" id="20">
+								<ul>
+									{% for outflow in outflows %}
+										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 20, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
+									{% endfor %}
+									{% if outflows|length > 0 %}
+										<li onclick="removeOutflow({{ prefabricate.id }}, 20)">Brak</li>
+									{% endif %}
+								</ul>
+							</div>
 						</div>
 				</div>
 
-				<div class="clear"></div>
+                {% for prefabricate_outflow in prefabricate_outflows %}
+                    <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');</script>
+                {% endfor %}
+
+				<div class="clear clear_odejscia"></div>
 				<button onclick="location.href='{% url "krok_2" %}';" class="cofnij">COFNIJ</button>
 				<button onclick="location.href='{% url "krok_4" %}';" class="dalej">DALEJ</button>
 

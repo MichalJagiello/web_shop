@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+	<div class="wrapper">
+
+
+		<div id="top_krok">
+
+			<div id="logowanie">
+				<button class="active">Zalogowany</button>
+				<p class="login">{{ user_full_name }}</p>
+				<button onclick="location_change({% url 'django.contrib.auth.views.logout' %})">Wyloguj się</button>
+			</div>
+
+			<div class="logo">
+				<a href="/"><img src="{% static "img/logo.png" %}"/></a>
+			</div>
+
+		</div>
+
+
+
+
+
+	    <div class="content_krok">
+            <h3>Krok <span class="numeracja">5</span></h3>
+            <p>Podsumowanie projektu</p>
+
+
+            <div class="dane">
+
+                <table>
+                    <tr>
+                        <td>Lp.</td>
+                        <td>Oznaczenie prefabrykatu</td>
+                        <td>Ilość</td>
+                        <td>Edytuj</td>
+                        <td>Powiel</td>
+                        <td>Usuń</td>
+                    </tr>
+                    {% for prefabricate in prefabricates %}
+                        <tr>
+                            <td>{{ prefabricate.index|add:"1" }}</td>
+                            <td>{{ prefabricate.pipe_mark }}</td>
+                            <td>{{ prefabricate.count }}</td>
+                            <td><button class="cofnij" onclick="location.href='{% url "edytuj_prefabrykat" prefabricate.index %}';">EDYTUJ</button></td>
+                            <td><button class="cofnij" onclick="location.href='{% url "powiel_prefabrykat" prefabricate.index %}';">POWIEL</button></td>
+                            {% if prefabricates|length == 1 %}
+                                <td><button disabled class="cofnij" onclick="location.href='{% url "usun_prefabrykat" prefabricate.index %}';">USUŃ</button></td>
+                            {% else %}
+                                <td><button class="cofnij" onclick="location.href='{% url "usun_prefabrykat" prefabricate.index %}';">USUŃ</button></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+
+            <div class="clear"></div>
+            <button class="cofnij" onclick="location.href='{% url "zakoncz_projekt" %}';">ZAKOŃCZ</button>
+
+			</div>
+		</div>
+
+		<div class="push"></div>
+	</div>
+
+
+{% endblock %}

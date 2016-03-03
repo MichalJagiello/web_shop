@@ -450,6 +450,7 @@ padding: 0px!important;
 }
 
 .rura_lewa{
+background-image: url(img/rura.png);
 background-repeat: no-repeat;
 background-position: center right;
 }
@@ -467,6 +468,7 @@ background-position: center right;
 }
 
 .rura_prawa{
+background-image: url(img/rura.png);
 background-repeat: no-repeat;
 background-position: center left;
 }
@@ -585,6 +587,44 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.lokalizacje ul{
+visibility: hidden;
+position: absolute;
+bottom: -200px;
+  -webkit-transition: 0.2s ease;
+-o-transition: 0.2s ease;
+transition: 0.2s ease;
+}
+
+.lokalizacje:hover ul{
+visibility: visible;
+margin-left: -1px;
+bottom: -215px;
+
+}
+
+.lokalizacje ul li{
+list-style-type: none;
+margin-bottom: 5px;
+border: dotted #ccc 1px;
+padding: 7px;
+text-align: left;
+  -webkit-transition: 0.2s ease;
+-o-transition: 0.2s ease;
+transition: 0.2s ease;
+}
+
+.lokalizacje ul li:hover{
+border: dotted red 1px;
+}
+
+.lokalizacje ul li:active{
+border: solid red 1px;
+}
+
+.clear_odejscia{
+margin-top: 200px;
+}
 
 
 @media all and (max-width: 1050px) {
