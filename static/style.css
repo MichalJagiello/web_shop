@@ -540,6 +540,30 @@ top: 3px;
 left: 150px;
 }
 
+.odleglosci {
+    width: 38px;
+    height: 80px;
+    float: left;
+    display: inline;
+}
+
+.odleglosci input {
+    width: 38px;
+    height: 80px;
+    float: left;
+    display: inline;
+    min-width: 0px;
+    padding: inherit;
+    font-size: 30px;
+    text-align: right;
+    visibility: hidden;
+}
+
+.odleglosci input:hover {
+    min-width: 0px;
+    padding: inherit;
+}
+
 .lokalizacje{
 width: 38px;
 height: 80px;

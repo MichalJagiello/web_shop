@@ -136,3 +136,8 @@ class OutflowManipulateFormDelete(forms.Form):
         except Prefabricate.DoesNotExist:
             raise forms.ValidationError("Prefabrykat nie istnieje")
         return prefabricate_id
+
+
+class OutflowDistanceManipulateForm(OutflowManipulateFormDelete):
+
+    distance = forms.IntegerField(min_value=0)

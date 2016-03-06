@@ -73,12 +73,78 @@
 
 			<div class="dane">
 
-
-				<p class="wskazowka">Wskaż kursorem miejsce i wybierz z listy typ odejścia</p><br />
+				<div style="margin-bottom: 75px;">
+					<p class="wskazowka">Wskaż kursorem miejsce i wybierz z listy typ odejścia</p><br />
+				</div>
 				<div class="model">
 					<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
 					<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
 					<div class="clear">	</div>
+						<div class="odejscia" style="top: -75px;">
+							<div class="odleglosci">
+								<input type="text" id="input_0" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 0)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_1" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 1)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_2" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 2)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_3" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 3)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_4" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 4)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_5" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 5)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_6" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 6)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_7" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 7)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_8" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 8)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_9" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 9)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_10" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 10)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_11" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 11)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_12" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 12)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_13" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 13)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_14" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 14)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_15" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 15)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_16" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 16)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_17" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 17)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_18" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 18)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_19" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 19)"/>
+							</div>
+							<div class="odleglosci">
+								<input type="text" id="input_20" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 20)"/>
+							</div>
+						</div>
 						<div class="odejscia">
 							<div class="lokalizacje" id="0">
 								<ul>
@@ -294,7 +360,7 @@
 				</div>
 
                 {% for prefabricate_outflow in prefabricate_outflows %}
-                    <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');</script>
+                    <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
                 {% endfor %}
 
 				<div class="clear clear_odejscia"></div>

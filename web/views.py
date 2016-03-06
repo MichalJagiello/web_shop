@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from autoryzacja.forms import LoginForm, RegisterForm
 from autoryzacja.models import PipesUser
 
-from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete
+from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete, OutflowDistanceManipulateForm
 from projects.models import Project, Prefabricate, PrefabricateOutflow
 
 from pipes_types.forms import UpdateColorSelectForm
@@ -343,11 +343,13 @@ class OutflowsManipulateView(View):
             pref_outflow = PrefabricateOutflow.objects.get(prefabricate=prefabricate,
                                                            index=index)
             pref_outflow.outflow = outflow
+            pref_outflow.distance = 1
             pref_outflow.save()
         except PrefabricateOutflow.DoesNotExist:
             PrefabricateOutflow.objects.create(prefabricate=prefabricate,
                                                outflow=outflow,
-                                               index=index)
+                                               index=index,
+                                               distance=1)
 
         return HttpResponse()
 
@@ -367,3 +369,47 @@ class OutflowsManipulateView(View):
             raise SuspiciousOperation("Outflow not exists")
 
         return HttpResponse()
+
+
+class OutflowDistanceManipulateView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(OutflowDistanceManipulateView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        form = OutflowDistanceManipulateForm(request.GET)
+
+        if not form.is_valid():
+            print(form.errors)
+            raise SuspiciousOperation("Invalid form")
+
+        prefabricate = Prefabricate.objects.get(id=form.cleaned_data.get('prefabricate_id'))
+        index = form.cleaned_data.get('index')
+
+        try:
+            prefabricate_outflow = PrefabricateOutflow.objects.get(prefabricate=prefabricate,
+                                            index=index)
+        except PrefabricateOutflow.DoesNotExist:
+            raise SuspiciousOperation("Outflow not exists")
+
+        print(form.cleaned_data)
+
+        prefabricate_outflow.distance = form.cleaned_data.get('distance')
+        prefabricate_outflow.save()
+
+        return HttpResponse()
+
+
+class PrintPdfFileView(LoginRequiredMixin, View):
+
+    login_url = '/login/'
+
+    def get(self, request):
+        project = Project.objects.get(id=request.session.get('project'))
+        prefabricates = Prefabricate.objects.filter(project=project).order_by('index')
+        prefabricates_outflows = PrefabricateOutflow.objects.filter(prefabricate__in=prefabricates)
+        return render(request, 'pdf_template.html', {'user_full_name': request.user.get_full_name(),
+                                                     'project': project,
+                                                     'prefabricates': prefabricates,
+                                                     'prefabricate_outflows': prefabricates_outflows})

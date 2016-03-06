@@ -67,3 +67,4 @@ class PrefabricateOutflow(models.Model):
     prefabricate = models.ForeignKey(Prefabricate, verbose_name='Prefabrykat')
     outflow = models.ForeignKey(PipeOutflow, verbose_name='Odejście')
     index = models.IntegerField(verbose_name='Indeks')
+    distance = models.IntegerField(verbose_name='Odległość')
