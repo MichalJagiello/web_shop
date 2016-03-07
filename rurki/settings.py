@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'autoryzacja',
     'pipes_types',
     'projects',
+    'wkhtmltopdf',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -121,6 +122,14 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+#EMAIL SETTINGS
+EMAIL_HOST = "s13.pro-linuxpl.com"
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "dekk"
+EMAIL_HOST_PASSWORD = ""
+EMAIL_USE_SSL = True
 
 
 # Static files (CSS, JavaScript, Images)

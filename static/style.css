@@ -279,7 +279,7 @@ padding-right: 20px;
 font-size: 18px;
 }
 
-.dane input{
+/*.dane input{
 border: solid #ddd 1px;
 padding: 8px 10px;
 min-width: 300px;
@@ -289,7 +289,7 @@ min-width: 300px;
 border: solid #bbb 1px;
 padding: 8px 10px;
 min-width: 300px;
-}
+}*/
 
 .dane .rubryka{
 margin: 15px auto;
@@ -572,12 +572,6 @@ display: inline;
 cursor: pointer;
 }
 
-.lokalizacje:hover{
-border: solid red 1px;
-background-position: -1px -1px;
-margin-right: -2px;
-}
-
 .model{
 
 clear: both;
@@ -609,6 +603,16 @@ background-position: center center;
 background-image: url(img/gora.png);
 background-repeat: no-repeat;
 background-position: center center;
+}
+
+.odejscia_odleglosc {
+    width: 30px;
+    font-size: 7pt;
+    line-height: 6pt;
+    padding: 0px;
+    height: 20px;
+    float: left;
+    text-align: right;
 }
 
 .lokalizacje ul{
@@ -645,6 +649,18 @@ border: dotted red 1px;
 .lokalizacje ul li:active{
 border: solid red 1px;
 }
+
+.lokalizacje span{
+    margin-top: 90px;
+    margin-left: -15px;
+    background-image: url(img/strzalka_l.jpg);
+    background-repeat: no-repeat;
+    position: absolute;
+    font-size: 12px;
+    padding-top: 15px;
+    visibility: hidden;
+}
+
 
 .clear_odejscia{
 margin-top: 200px;

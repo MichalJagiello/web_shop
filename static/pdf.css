@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: none;
+    color: #42413a;
+	font-family: 'Lato', sand-serif;
+}
+
+.clear{
+	width: 100%;
+	height: 2px;
+	clear: both;
+}
+
+html, body {
+height: 100%;
+}
+
+.pdf{
+width: 940px;
+padding: 30px;
+height: 647px;
+margin: 0 auto;
+border: solid black 1px;
+position: relative;
+}
+
+.pdf_top{
+clear: both;
+height: 35px;
+
+}
+
+.pdf_logo{
+float: left;
+}
+
+.karta_nazwa{
+float: right;
+}
+
+.karta_nazwa p{
+font-size: 24px;
+font-weight: 700;
+}
+
+.pdf .tabela{
+clear: both;
+border: solid black 1px;
+height: 35px;
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+.zamawiajacy{
+background-color: black;
+color: #fff;
+}
+
+.zamawiajacy p{
+color: #fff;
+height: 22px;
+
+}
+
+.zamawiajacy p, .nazwa p, .losc_sztuk p, .data p{
+font-size: 17px;
+padding: 7px 15px;
+}
+
+.zamawiajacy, .nazwa, .losc_sztuk{
+float: left;
+display: table;
+border-right: solid black 1px;
+}
+
+.pdf .data{
+float: right;
+border-left: solid black 1px;
+}
+
+.numer_karty{
+position: absolute;
+bottom: 20px;
+left: 50%;
+margin-left: -45px;
+}
+
+.pdf_dane{
+float: left;
+}
+
+.pdf_dane ul, .pdf_odejscia ul
+{
+margin-top: 5px;
+}
+
+.pdf_dane li, .pdf_odejscia li{
+list-style-type: none;
+margin-right: 15px;
+margin-left: 15px;
+line-height: 19px;
+}
+
+.pdf_odejscia{
+float: right;
+text-align: right;
+}
+
+
+
+.rura{
+width: 50%;
+height: 45px;
+float: left;
+margin: 20px 0px 20px 0px;
+}
+
+.rura_lewa{
+background-image: url(img/rura.png);
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_lewa_owal{
+background-image: url(img/rura_owal_lewa.png);
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_lewa_rowek{
+background-image: url(img/rura_rowek_lewa.png);
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_prawa{
+background-image: url(img/rura.png);
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+.rura_prawa_owal{
+background-image: url(img/rura_owal_prawa.png);
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+.rura_prawa_rowek{
+background-image: url(img/rura_rowek_prawa.png);
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+
+.zakonczenie_lewe{
+float: left;
+}
+
+.zakonczenie_prawe{
+float: right;
+}
+
+
+.odejscia{
+height: 80px;
+width: 805px;
+margin-left: auto;
+margin-right: auto;
+position: absolute;
+top: 3px;
+left: 70px;
+}
+
+.lokalizacje{
+width: 38px;
+height: 80px;
+float: left;
+display: inline;
+cursor: pointer;
+}
+
+
+.model{
+clear: both;
+height: 100px;
+margin-top: 300px;
+position: relative;
+max-width: 100%;
+margin-bottom: 20px;
+}
+
+.odejscie_tyl{
+background-image: url(img/tyl.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_przod{
+background-image: url(img/przod.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol{
+background-image: url(img/dol.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora{
+background-image: url(img/gora.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.lokalizacje span{
+margin-top: 90px;
+background-image: url(img/strzalka_l.jpg);
+background-repeat: no-repeat;
+position: absolute;
+font-size: 12px;
+padding-top: 15px;
+}

@@ -1,6 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import os
+
+from wkhtmltopdf.views import PDFTemplateResponse
+
+from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
@@ -11,6 +16,8 @@ from django.http import Http404
 from django.core.files.base import ContentFile
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 from autoryzacja.forms import LoginForm, RegisterForm
 from autoryzacja.models import PipesUser
@@ -178,6 +185,20 @@ class ThirdStepView(LoginRequiredMixin, View):
                                                'prefabricate_outflows': prefabricate_outflows})
 
 
+class ThirdAndHalfStepView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        prefabricate_id = request.session.get('prefabricate', None)
+        if prefabricate_id is None:
+            raise Http404("Project is saved")
+        prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
+        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
+        return render(request, 'krok_3_5.html', {'user_full_name': request.user.get_full_name(),
+                                               'prefabricate': prefabricate,
+                                               'prefabricate_outflows': prefabricate_outflows})
+
+
 class FourthStepView(LoginRequiredMixin, View):
     login_url = '/login/'
 
@@ -186,8 +207,10 @@ class FourthStepView(LoginRequiredMixin, View):
         if prefabricate_id is None:
             raise Http404("Project is saved")
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
+        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
         return render(request, 'krok_4.html', {'user_full_name': request.user.get_full_name(),
-                                               'prefabricate': prefabricate})
+                                               'prefabricate': prefabricate,
+                                               'prefabricate_outflows': prefabricate_outflows})
 
 class NextPrefabricateView(LoginRequiredMixin, View):
 
@@ -255,6 +278,32 @@ class SaveProjectView(LoginRequiredMixin, View):
 class FinishProjectView(LoginRequiredMixin, View):
 
     def get(self, request):
+
+        project = Project.objects.get(id=request.session.get('project'))
+        prefabricates = Prefabricate.objects.filter(project=project).order_by('index')
+        prefabricates_outflows = PrefabricateOutflow.objects.filter(prefabricate__in=prefabricates)
+
+        template = render_to_string('pdf_template.html', {'user_full_name': request.user.get_full_name(),
+                                                                  'project': project,
+                                                                  'prefabricates': prefabricates,
+                                                                  'prefabricate_outflows': prefabricates_outflows,
+                                                                  'rura_lewa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png'),
+                                                                  'rura_lewa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_lewa.png'),
+                                                                  'rura_lewa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_lewa.png'),
+                                                                  'rura_prawa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png.png'),
+                                                                  'rura_prawa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_prawa.png'),
+                                                                  'rura_prawa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_prawa.png'),
+                                                                  'odejscie_tyl_image': os.path.join(settings.BASE_DIR, 'static/img/tyl.png'),
+                                                                  'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
+                                                                  'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
+                                                                  'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
+                                                                  'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png')})
+
+        email = EmailMessage('Nowy projekt', 'Nowy projekt stworzony przez klienta', 'dekk@pipesprefabrication.pl', ['michal.jgl@gmail.com'])
+        email.attach('projekt.pdf', pdf_generator.generate(template), 'application/pdf')
+        email.send()
+
         if request.session.has_key('project'):
             project = request.session.get('project')
             project_obj = Project.objects.get(id=project)
@@ -400,16 +449,29 @@ class OutflowDistanceManipulateView(View):
 
         return HttpResponse()
 
-
 class PrintPdfFileView(LoginRequiredMixin, View):
 
     login_url = '/login/'
 
     def get(self, request):
+
         project = Project.objects.get(id=request.session.get('project'))
         prefabricates = Prefabricate.objects.filter(project=project).order_by('index')
         prefabricates_outflows = PrefabricateOutflow.objects.filter(prefabricate__in=prefabricates)
-        return render(request, 'pdf_template.html', {'user_full_name': request.user.get_full_name(),
-                                                     'project': project,
-                                                     'prefabricates': prefabricates,
-                                                     'prefabricate_outflows': prefabricates_outflows})
+
+        return PDFTemplateResponse(request, 'pdf_template.html', {'user_full_name': request.user.get_full_name(),
+                                                                  'project': project,
+                                                                  'prefabricates': prefabricates,
+                                                                  'prefabricate_outflows': prefabricates_outflows,
+                                                                  'rura_lewa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png'),
+                                                                  'rura_lewa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_lewa.png'),
+                                                                  'rura_lewa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_lewa.png'),
+                                                                  'rura_prawa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png.png'),
+                                                                  'rura_prawa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_prawa.png'),
+                                                                  'rura_prawa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_prawa.png'),
+                                                                  'odejscie_tyl_image': os.path.join(settings.BASE_DIR, 'static/img/tyl.png'),
+                                                                  'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
+                                                                  'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
+                                                                  'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
+                                                                  'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png')})

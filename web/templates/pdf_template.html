@@ -1,6 +1,330 @@
-{% extends "base.html" %}
 {% load staticfiles %}
 
-{% block wrapper %}
+<!doctype html>
+<html lang="pl">
+<head>
+	<meta charset="utf-8">
+	<meta name="Description" content="   " />
+	<meta name="Keywords" content="   " />
+	<meta name="Author" content="Arkadiusz Skibiński - strony-piaseczno.pl" />
+	<title>PipesPrefabrication</title>
+	<link rel="Shortcut icon" href="images/favicon.ico" />
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,700,300italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>	
+	 <link href='https://fonts.googleapis.com/css?family=Oswald:400&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
-{% endblock %}
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    border: none;
+    color: #42413a;
+	font-family: 'Lato', sand-serif;
+}
+
+.clear{
+	width: 100%;
+	height: 2px;
+	clear: both;
+}
+
+html, body {
+height: 100%;
+}
+
+.pdf{
+width: 940px;
+padding: 30px;
+height: 647px;
+margin: 0 auto;
+border: solid black 1px;
+position: relative;
+}
+
+.pdf_top{
+clear: both;
+height: 35px;
+
+}
+
+.pdf_logo{
+float: left;
+}
+
+.karta_nazwa{
+float: right;
+}
+
+.karta_nazwa p{
+font-size: 24px;
+font-weight: 700;
+}
+
+.pdf .tabela{
+clear: both;
+border: solid black 1px;
+height: 35px;
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+.zamawiajacy{
+background-color: black;
+color: #fff;
+}
+
+.zamawiajacy p{
+color: #fff;
+height: 22px;
+
+}
+
+.zamawiajacy p, .nazwa p, .losc_sztuk p, .data p{
+font-size: 17px;
+padding: 7px 15px;
+}
+
+.zamawiajacy, .nazwa, .losc_sztuk{
+float: left;
+display: table;
+border-right: solid black 1px;
+}
+
+.pdf .data{
+float: right;
+border-left: solid black 1px;
+}
+
+.numer_karty{
+position: absolute;
+bottom: 20px;
+left: 50%;
+margin-left: -45px;
+}
+
+.pdf_dane{
+float: left;
+}
+
+.pdf_dane ul, .pdf_odejscia ul
+{
+margin-top: 5px;
+}
+
+.pdf_dane li, .pdf_odejscia li{
+list-style-type: none;
+margin-right: 15px;
+margin-left: 15px;
+line-height: 19px;
+}
+
+.pdf_odejscia{
+float: right;
+text-align: right;
+}
+
+
+
+.rura{
+width: 50%;
+height: 45px;
+float: left;
+margin: 20px 0px 20px 0px;
+}
+
+.rura_lewa{
+background-image: url({{ rura_lewa_image }});
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_lewa_owal{
+background-image: url({{ rura_lewa_owal_image }});
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_lewa_rowek{
+background-image: url({{ rura_lewa_rowek_image }});
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_prawa{
+background-image: url({{ rura_prawa_image }});
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+.rura_prawa_owal{
+background-image: url({{ rura_prawa_owal_image }});
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+.rura_prawa_rowek{
+background-image: url({{ rura_prawa_rowek_image }});
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+
+.zakonczenie_lewe{
+float: left;
+}
+
+.zakonczenie_prawe{
+float: right;
+}
+
+
+.odejscia{
+height: 80px;
+width: 805px;
+margin-left: auto;
+margin-right: auto;
+position: absolute;
+top: 3px;
+left: 70px;
+}
+
+.lokalizacje{
+width: 38px;
+height: 80px;
+float: left;
+display: inline;
+cursor: pointer;
+}
+
+
+.model{
+clear: both;
+height: 100px;
+margin-top: 300px;
+position: relative;
+max-width: 100%;
+margin-bottom: 20px;
+}
+
+.odejscie_tyl{
+background-image: url({{ odejscie_tyl_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_przod{
+background-image: url({{ odejscie_przod_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol{
+background-image: url({{ odejscie_dol_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora{
+background-image: url({{ odejscie_gora_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.lokalizacje span{
+margin-top: 90px;
+background-image: url({{ strzalka_image}});
+background-repeat: no-repeat;
+position: absolute;
+font-size: 12px;
+padding-top: 15px;
+width: 40px;
+	visibility: hidden;
+	text-align: center;
+}
+    </style>
+
+</head>
+
+<body>
+		{% for prefabricate in prefabricates %}
+			<div class="pdf">
+				<div class="pdf_top">
+					<div class="pdf_logo">
+						<a href="/"><img src="{{ logo_image }}"/></a>
+					</div>
+
+					<div class="karta_nazwa">
+						<p>KARTA PREFABRYKATU {{ prefabricate.index|add:1 }}</p>
+					</div>
+
+				</div>
+
+				<div class="tabela">
+					<div class="zamawiajacy">
+						<p>Zamawiający: {{ user_full_name }}</p>
+					</div>
+					<div class="nazwa">
+						<p>Nazwa: {{ project.name }}</p>
+					</div>
+					<div class="losc_sztuk">
+						<p>Sztuk: {{ prefabricate.count }}</p>
+					</div>
+
+					<div class="data">
+						<p>Data: {% now "SHORT_DATE_FORMAT" %}</p>
+					</div>
+
+				</div>
+
+				<div class="pdf_dane">
+					<h3>Dane zamówienia:</h3>
+						<ul>
+							<li>Oznaczenie: {{ prefabricate.pipe_mark }}</li>
+							<li>Średnica rury: {{ prefabricate.diameter }}</li>
+							<li>Rodzaj rury: {{ prefabricate.pipe_type }}</li>
+							{% if prefabricate.pipe_color %}
+								<li>Kolor do pomalowania: {{ prefabricate.pipe_color }}</li>
+							{% else %}
+								<li>Kolor do pomalowania: brak</li>
+							{% endif %}
+							<li>Zakończenie lewe: {{ prefabricate.pipe_left_end }}</li>
+							<li>Zakończenie lewe: {{ prefabricate.pipe_right_end }}</li>
+						</ul>
+				</div>
+
+				<div class="pdf_odejscia">
+					<h3>Odejścia</h3>
+						<ul>
+							{% for odejscie in prefabricate.outflows %}
+								<li>Odejscie {{ odejscie.outflow.name }}</li>
+							{% endfor %}
+						</ul>
+
+				</div>
+
+
+				<div class="model">
+					<div class="rura {{ prefabricate.pipe_left_end.css_class }}"></div>
+					<div class="rura {{ prefabricate.pipe_right_end.css_class }}"></div>
+						<div class="clear"></div>
+
+						<div class="odejscia">
+							{% for localization in prefabricate.localizations %}
+								{% if localization %}
+									<div class="lokalizacje {{ localization.outflow.css_class }}"><span style="visibility: visible">{{ localization.distance }} cm</span></div>
+								{% else %}
+									<div class="lokalizacje"><span></span></div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+
+				<div class="numer_karty">
+					<p>karta nr {{ prefabricate.index|add:1 }}/{{ prefabricates|length }}</p>
+				</div>
+
+			</div>
+			<div style="page-break-after: always"></div>
+		{% endfor %}
+
+</body>
+</html>

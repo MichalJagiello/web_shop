@@ -14,3 +14,7 @@ traitlets==4.1.0
 wheel==0.24.0
 whitenoise==2.0.6
 wkhtmltopdf==0.2
+rlextra -i https://www.reportlab.com/pypi/
+xhtml2pdf
+html5lib
+pypdf

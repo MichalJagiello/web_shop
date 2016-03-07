@@ -5,6 +5,14 @@
 
     <script src="{% static 'outflow_select.js' %}"></script>
 
+	<style>
+		.lokalizacje:hover{
+			border: solid red 1px;
+			background-position: -1px -1px;
+			margin-right: -2px;
+		}
+	</style>
+
 	<div class="wrapper">
 
 
@@ -73,14 +81,14 @@
 
 			<div class="dane">
 
-				<div style="margin-bottom: 75px;">
+				<div>
 					<p class="wskazowka">Wskaż kursorem miejsce i wybierz z listy typ odejścia</p><br />
 				</div>
 				<div class="model">
 					<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
 					<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
 					<div class="clear">	</div>
-						<div class="odejscia" style="top: -75px;">
+						<!-- <div class="odejscia" style="top: -75px;">
 							<div class="odleglosci">
 								<input type="text" id="input_0" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 0)"/>
 							</div>
@@ -144,7 +152,7 @@
 							<div class="odleglosci">
 								<input type="text" id="input_20" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 20)"/>
 							</div>
-						</div>
+						</div>-->
 						<div class="odejscia">
 							<div class="lokalizacje" id="0">
 								<ul>

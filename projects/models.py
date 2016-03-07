@@ -61,6 +61,19 @@ class Prefabricate(models.Model):
     def __str__(self):
         return "Prefabrykat {} projektu {} użytkownika".format(self.index + 1, self.project.name, self.project.user.get_full_name())
 
+    @property
+    def outflows(self):
+        return PrefabricateOutflow.objects.filter(prefabricate=self).order_by('index')
+
+    @property
+    def localizations(self):
+        localizations = [None]*21
+
+        for outflow in self.outflows:
+            localizations[outflow.index] = outflow
+
+        return localizations
+
 
 class PrefabricateOutflow(models.Model):
 

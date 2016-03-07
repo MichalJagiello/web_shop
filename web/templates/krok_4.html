@@ -2,6 +2,8 @@
 {% load staticfiles %}
 
 {% block wrapper %}
+
+	<script src="{% static 'outflow_select.js' %}" xmlns="http://www.w3.org/1999/html"></script>
 	<div class="wrapper">
 
 
@@ -24,8 +26,8 @@
 
 
 	<div class="content_krok">
-        <h3>Krok <span class="numeracja">4</span></h3>
-		<p>Podaj odległości pomiędzy odejściami</p>
+        <h3>Krok <span class="numeracja">5</span></h3>
+		<p>Podsumowanie prefabrykatu</p>
 
 
         <div class="dane">
@@ -68,46 +70,47 @@
 
         </div>
 
-
-
-
-
 			<div class="dane">
 
-
-
-				<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
-				<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
-				<div class="clear">	</div>
+                <div class="model">
+                    <div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
+                    <div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
+                    <div class="clear">	</div>
 					<div class="odejscia">
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
-						<div class="lokalizacje"></div>
+						<div class="lokalizacje" id="0"><span></span></div>
+						<div class="lokalizacje" id="1"><span></span></div>
+						<div class="lokalizacje" id="2"><span></span></div>
+						<div class="lokalizacje" id="3"><span></span></div>
+						<div class="lokalizacje" id="4"><span></span></div>
+						<div class="lokalizacje" id="5"><span></span></div>
+						<div class="lokalizacje" id="6"><span></span></div>
+						<div class="lokalizacje" id="7"><span></span></div>
+						<div class="lokalizacje" id="8"><span></span></div>
+						<div class="lokalizacje" id="9"><span></span></div>
+						<div class="lokalizacje" id="10"><span></span></div>
+						<div class="lokalizacje" id="11"><span></span></div>
+						<div class="lokalizacje" id="12"><span></span></div>
+						<div class="lokalizacje" id="13"><span></span></div>
+						<div class="lokalizacje" id="14"><span></span></div>
+						<div class="lokalizacje" id="15"><span></span></div>
+						<div class="lokalizacje" id="16"><span></span></div>
+						<div class="lokalizacje" id="17"><span></span></div>
+						<div class="lokalizacje" id="18"><span></span></div>
+						<div class="lokalizacje" id="19"><span></span></div>
+						<div class="lokalizacje" id="20"><span></span></div>
 					</div>
+				</div>
+
+                {% for prefabricate_outflow in prefabricate_outflows %}
+                    <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
+                    <script>showOutflowsDistancesSpan({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
+                {% endfor %}
 				<div class="clear">	</div>
 
 				<div class="clear"></div>
-				<button onclick="location.href='{% url "krok_3" %}';" class="cofnij">COFNIJ</button>
+				<button onclick="location.href='{% url "krok_4" %}';" class="cofnij">COFNIJ</button>
 				<button class="dalej" onclick="location.href='{% url "zapisz_projekt" %}';">ZAPISZ</button>
-				<!-- <button class="dalej" onclick="location.href='{% url "drukuj_pdf" %}';">DRUKUJ DO PDF</button> -->
-				<button class="dalej">DRUKUJ DO PDF</button>
+				<button class="dalej" onclick="location.href='{% url "drukuj_pdf" %}';">DRUKUJ DO PDF</button>
 				<button class="dalej" onclick="location.href='{% url "nastepny_prefabrykat" %}';">PRZEJDŹ DO DEFINIOWANIA KOLEJNEGO PREFABRYKATU</button>
 
 			</div>

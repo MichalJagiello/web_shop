@@ -7,6 +7,7 @@ from web.views import MainPageView,\
                       ThirdStepView,\
                       FourthStepView, \
                       RegistrationView,\
+                      ThirdAndHalfStepView, \
                       SaveProjectView, \
                       FinishProjectView, \
                       RegistrationFormView,\
@@ -25,7 +26,8 @@ urlpatterns = [
     url(r'krok_1/$', FirstStepView.as_view(), name='krok_1'),
     url(r'krok_2/$', SecondStepView.as_view(), name='krok_2'),
     url(r'krok_3/$', ThirdStepView.as_view(), name='krok_3'),
-    url(r'krok_4/$', FourthStepView.as_view(), name='krok_4'),
+    url(r'krok_4/$', ThirdAndHalfStepView.as_view(), name='krok_4'),
+    url(r'krok_5/$', FourthStepView.as_view(), name='krok_5'),
     url(r'print_pdf/$', PrintPdfFileView.as_view(), name='drukuj_pdf'),
     url(r'next_prefabricate/$', NextPrefabricateView.as_view(), name='nastepny_prefabrykat'),
     url(r'usun_prefabrykat/(?P<prefabricate_index>\d+)/$', DeletePrefabricateView.as_view(), name='usun_prefabrykat'),
@@ -38,5 +40,5 @@ urlpatterns = [
 
     url(r'^krok_2/filter_colors/$', ColorFilterView.as_view(), name='filter_colors'),
     url(r'^krok_3/outflow/$', OutflowsManipulateView.as_view(), name='outflows_manipulate'),
-    url(r'^krok_3/outflow_distance/$', OutflowDistanceManipulateView.as_view(), name='outflows_distance_manipulate'),
+    url(r'^krok_4/outflow_distance/$', OutflowDistanceManipulateView.as_view(), name='outflows_distance_manipulate'),
 ]

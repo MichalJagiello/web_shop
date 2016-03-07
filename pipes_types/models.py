@@ -61,6 +61,7 @@ class PipeLeftEnd(models.Model):
     image = models.ImageField(verbose_name='Obrazek zakończenia', upload_to='zakonczenia_lewe')
     available = models.BooleanField(default=True, verbose_name='Dostępne')
     pipe_image = models.ImageField(verbose_name='Obrazek zakończenia z rurą', upload_to='zakonczenia_lewe')
+    css_class = models.CharField(verbose_name='Klasa css', max_length=64)
 
     class Meta:
         verbose_name = 'Zakończenie rury lewe'
@@ -75,6 +76,7 @@ class PipeRightEnd(models.Model):
     image = models.ImageField(verbose_name='Obrazek zakończenia', upload_to='zakonczenia_prawe')
     available = models.BooleanField(default=True, verbose_name='Dostępne')
     pipe_image = models.ImageField(verbose_name='Obrazek zakończenia z rurą', upload_to='zakonczenia_prawe')
+    css_class = models.CharField(verbose_name='Klasa css', max_length=64)
 
     class Meta:
         verbose_name = 'Zakończenie rury prawe'

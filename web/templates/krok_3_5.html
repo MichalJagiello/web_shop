@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+
+<script src="{% static 'outflow_select.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+
+	<div class="wrapper">
+
+
+		<div id="top_krok">
+
+			<div id="logowanie">
+				<button class="active">Zalogowany</button>
+				<p class="login">{{ user_full_name }}</p>
+				<button onclick="location_change({% url 'django.contrib.auth.views.logout' %})">Wyloguj się</button>
+			</div>
+
+			<div class="logo">
+				<a href="/"><img src="{% static "img/logo.png" %}"/></a>
+			</div>
+
+		</div>
+
+	    <div class="content_krok">
+            <h3>Krok <span class="numeracja">4</span></h3>
+            <p>Podaj odległość pomiędzy odejściami</p><div class="dane">
+
+                        <div class="zdefiniowane">
+					<p>wybrane oznaczenie</p>
+					<div class="check"><p>{{ prefabricate.pipe_mark }}</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrana średnica</p>
+					<div class="check"><p>{{ prefabricate.pipe_diameter }}</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrany rodzaj</p>
+					<div class="check"><p>{{ prefabricate.pipe_type }}</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrany kolor</p>
+					<div class="check">
+						<p>
+							{% if prefabricate.pipe_color %}
+								{{ prefabricate.pipe_color }}
+							{% else %}
+								---------
+							{% endif %}
+						</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrana ilość</p>
+					<div class="check"><p>{{ prefabricate.count }}</p></div>
+					</div>
+
+
+                    <div class="clear"></div>
+                    <br /> <br />
+
+        </div>
+			<div class="dane">
+
+				<div>
+					<p class="wskazowka">Odległość podaj w centymetrach</p><br />
+				</div>
+
+                <div class="model">
+				    <div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
+                    <div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
+					<div class="clear"></div>
+
+					<div class="odejscia">
+						<!-- <div class="lokalizacje odejscie_tyl"><span><input class="odejscia_odleglosc" type="text"></span></div> -->
+						<div class="lokalizacje" id="0"><span><input id="input_0" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 0)"></span></div>
+						<div class="lokalizacje" id="1"><span><input id="input_1" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 1)"></span></div>
+						<div class="lokalizacje" id="2"><span><input id="input_2" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 2)"></span></div>
+						<div class="lokalizacje" id="3"><span><input id="input_3" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 3)"></span></div>
+						<div class="lokalizacje" id="4"><span><input id="input_4" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 4)"></span></div>
+						<div class="lokalizacje" id="5"><span><input id="input_5" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 5)"></span></div>
+						<div class="lokalizacje" id="6"><span><input id="input_6" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 6)"></span></div>
+						<div class="lokalizacje" id="7"><span><input id="input_7" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 7)"></span></div>
+						<div class="lokalizacje" id="8"><span><input id="input_8" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 8)"></span></div>
+						<div class="lokalizacje" id="9"><span><input id="input_9" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 9)"</span></div>
+						<div class="lokalizacje" id="10"><span><input id="input_10" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 10)"></span></div>
+						<div class="lokalizacje" id="11"><span><input id="input_11" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 11)"></span></div>
+						<div class="lokalizacje" id="12"><span><input id="input_12" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 12)"></span></div>
+						<div class="lokalizacje" id="13"><span><input id="input_13" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 13)"></span></div>
+						<div class="lokalizacje" id="14"><span><input id="input_14" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 14)"></span></div>
+						<div class="lokalizacje" id="15"><span><input id="input_15" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 15)"></span></div>
+						<div class="lokalizacje" id="16"><span><input id="input_16" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 16)"></span></div>
+						<div class="lokalizacje" id="17"><span><input id="input_17" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 17)"></span></div>
+						<div class="lokalizacje" id="18"><span><input id="input_18" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 18)"></span></div>
+						<div class="lokalizacje" id="19"><span><input id="input_19" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 19)"></span></div>
+						<div class="lokalizacje" id="20"><span><input id="input_20" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 20)"></span></div>
+					</div>
+
+				</div>
+
+                {% for prefabricate_outflow in prefabricate_outflows %}
+                    <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
+                    <script>showOutflowsDistances({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
+                {% endfor %}
+
+				<div class="clear"></div>
+				<button onclick="location.href='{% url "krok_3" %}';" class="cofnij">COFNIJ</button>
+				<button onclick="location.href='{% url "krok_5" %}';" class="dalej">DALEJ</button>
+
+			</div>
+		</div>
+
+		<div class="push"></div>
+	</div>
+
+{% endblock %}

@@ -28,6 +28,7 @@ function changeOutflow(prefabricate_id, outflow_id, index, css_class) {
 }
 
 function changeDistance(prefabricate_id, distance_input_id) {
+    console.log("aaa");
     var url = "outflow_distance/?prefabricate_id=" + encodeURI(prefabricate_id) + "&index=" + encodeURI(distance_input_id) + "&distance=" + encodeURI($("#input_" + distance_input_id).val());
     request.open("POST", url, true);
     request.onreadystatechange = function(){updatePageDistance(distance_input_id, $("#input_" + distance_input_id).val());};
@@ -61,8 +62,19 @@ function updatePageDistance(index, distance) {
 
 function showOutflows(index, css_class, distance) {
     $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
-    $("#input_" + index).css('visibility', 'visible');
+    //$("#input_" + index).css('visibility', 'visible');
+    //$("#input_" + index).val(distance)
+}
+
+function showOutflowsDistances(index, css_class, distance) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " > span").css('visibility', 'visible');
     $("#input_" + index).val(distance)
+}
+
+function showOutflowsDistancesSpan(index, css_class, distance) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
 }
 
 function clearOutflow(index) {
