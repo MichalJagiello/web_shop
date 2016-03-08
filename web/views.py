@@ -3,8 +3,6 @@
 
 import os
 
-from wkhtmltopdf.views import PDFTemplateResponse
-
 from django.conf import settings
 from django.core.exceptions import SuspiciousOperation
 from django.shortcuts import render, redirect, get_object_or_404
@@ -19,7 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 
-from autoryzacja.forms import LoginForm, RegisterForm
+from autoryzacja.forms import RegisterForm
 from autoryzacja.models import PipesUser
 
 from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete, OutflowDistanceManipulateForm
@@ -460,7 +458,7 @@ class PrintPdfFileView(LoginRequiredMixin, View):
         prefabricates = Prefabricate.objects.filter(project=project).order_by('index')
         prefabricates_outflows = PrefabricateOutflow.objects.filter(prefabricate__in=prefabricates)
 
-        return PDFTemplateResponse(request, 'pdf_template.html', {'user_full_name': request.user.get_full_name(),
+        template = render_to_string('pdf_template.html', {'user_full_name': request.user.get_full_name(),
                                                                   'project': project,
                                                                   'prefabricates': prefabricates,
                                                                   'prefabricate_outflows': prefabricates_outflows,
@@ -476,3 +474,5 @@ class PrintPdfFileView(LoginRequiredMixin, View):
                                                                   'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
                                                                   'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
                                                                   'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png')})
+
+        return HttpResponse(pdf_generator.generate(template), 'application/pdf')
