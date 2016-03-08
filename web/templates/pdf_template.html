@@ -34,7 +34,7 @@ height: 100%;
 .pdf{
 width: 940px;
 padding: 30px;
-height: 647px;
+height: 630px;
 margin: 0 auto;
 border: solid black 1px;
 position: relative;
@@ -279,7 +279,7 @@ width: 40px;
 					<h3>Dane zamówienia:</h3>
 						<ul>
 							<li>Oznaczenie: {{ prefabricate.pipe_mark }}</li>
-							<li>Średnica rury: {{ prefabricate.diameter }}</li>
+							<li>Średnica rury: {{ prefabricate.pipe_diameter }}</li>
 							<li>Rodzaj rury: {{ prefabricate.pipe_type }}</li>
 							{% if prefabricate.pipe_color %}
 								<li>Kolor do pomalowania: {{ prefabricate.pipe_color }}</li>
@@ -287,7 +287,7 @@ width: 40px;
 								<li>Kolor do pomalowania: brak</li>
 							{% endif %}
 							<li>Zakończenie lewe: {{ prefabricate.pipe_left_end }}</li>
-							<li>Zakończenie lewe: {{ prefabricate.pipe_right_end }}</li>
+							<li>Zakończenie prawe: {{ prefabricate.pipe_right_end }}</li>
 						</ul>
 				</div>
 
@@ -298,9 +298,7 @@ width: 40px;
 								<li>Odejscie {{ odejscie.outflow.name }}</li>
 							{% endfor %}
 						</ul>
-
 				</div>
-
 
 				<div class="model">
 					<div class="rura {{ prefabricate.pipe_left_end.css_class }}"></div>

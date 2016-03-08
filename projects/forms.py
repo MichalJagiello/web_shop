@@ -75,7 +75,7 @@ class AddPrefabricateForm(forms.Form):
     type = forms.ModelChoiceField(PipeType.objects.filter(available=True), label='Rodzaj rury',
                                   widget=forms.Select(attrs={'onChange': 'getColorEnabled()'}))
     mark = forms.ModelChoiceField(PipeMark.objects.filter(available=True), label='Oznaczenie')
-    color = forms.ModelChoiceField(PipeColor.objects.filter(available=True), label='Color', required=False)
+    color = forms.ModelChoiceField(PipeColor.objects.filter(available=True), label='Kolor', required=False)
     left_end = PipeEndModelChoiceField(PipeLeftEnd.objects.filter(available=True), label='Zakończenie lewe',
                                        widget=forms.RadioSelect,
                                        empty_label=None)
