@@ -279,6 +279,24 @@ padding-right: 20px;
 font-size: 18px;
 }
 
+.rubryka{
+margin: 15px auto;
+text-align: right;
+width: 500px;
+}
+
+
+.rubryka input{
+    border: solid #ddd 1px;
+    padding: 8px 10px;
+    min-width: 300px;
+}
+
+.rubruka input:hover {
+    border: solid #bbb 1px;
+    padding: 8px 10px;
+}
+
 /*.dane input{
 border: solid #ddd 1px;
 padding: 8px 10px;
@@ -290,12 +308,6 @@ border: solid #bbb 1px;
 padding: 8px 10px;
 min-width: 300px;
 }*/
-
-.dane .rubryka{
-margin: 15px auto;
-text-align: right;
-width: 500px;
-}
 
 .check{
 border: solid #ddd 1px;
@@ -425,7 +437,6 @@ background-position: center 90px;
 .krok_1 p, .krok_3 p{
 margin-top: 20px;
 }
-
 
 #logowanie p, #logowanie button{
 display: inline;
