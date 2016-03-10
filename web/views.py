@@ -299,7 +299,7 @@ class FinishProjectView(LoginRequiredMixin, View):
                                                                   'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
                                                                   'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png')})
 
-        email = EmailMessage('Nowy projekt', 'Nowy projekt stworzony przez klienta', 'dekk@pipesprefabrication.pl', ['michal.jgl@gmail.com'])
+        email = EmailMessage('Nowy projekt', 'Nowy projekt stworzony przez klienta', 'dekk@pipesprefabrication.pl', ['michal.jgl@gmail.com', 'info@dekk.pl', 'kontakt@strony-piaseczno.pl'])
         email.attach('projekt.pdf', pdf_generator.generate(template), 'application/pdf')
         email.send()
 
