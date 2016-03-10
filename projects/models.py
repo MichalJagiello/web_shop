@@ -42,7 +42,7 @@ class Project(models.Model):
 class Prefabricate(models.Model):
 
     project = models.ForeignKey(Project, verbose_name='Projekt')
-    pipe_mark = models.ForeignKey(PipeMark, verbose_name='Oznaczenie prefabrykatu')
+    prefabricate_mark = models.CharField(max_length=256)
     pipe_diameter = models.ForeignKey(PipeDiameter, verbose_name='Średnica')
     pipe_color = models.ForeignKey(PipeColor, verbose_name='Kolor', null=True)
     pipe_type = models.ForeignKey(PipeType, verbose_name='Rodzaj rury')

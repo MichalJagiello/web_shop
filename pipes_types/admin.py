@@ -56,7 +56,7 @@ class PipeOutflowAdmin(admin.ModelAdmin):
 admin.site.register(PipeColor, PipeColorAdmin)
 admin.site.register(PipeDiameter, PipeDiameterAdmin)
 admin.site.register(PipeType, PipeDiameterAdmin)
-admin.site.register(PipeMark, PipeMarkAdmin)
+#admin.site.register(PipeMark, PipeMarkAdmin)
 admin.site.register(PipeLeftEnd, PipeEndAdmin)
 admin.site.register(PipeRightEnd, PipeEndAdmin)
 admin.site.register(PipeOutflow, PipeOutflowAdmin)

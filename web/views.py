@@ -124,7 +124,7 @@ class SecondStepView(LoginRequiredMixin, View):
             else:
                 form = self.form_class(initial={'diameter': prefabricate.pipe_diameter,
                                                 'type': prefabricate.pipe_type,
-                                                'mark': prefabricate.pipe_mark,
+                                                'mark': prefabricate.prefabricate_mark,
                                                 'color': prefabricate.pipe_color,
                                                 'left_end': prefabricate.pipe_left_end,
                                                 'right_end': prefabricate.pipe_right_end,
@@ -144,7 +144,7 @@ class SecondStepView(LoginRequiredMixin, View):
                 prefabricate = Prefabricate.objects.get(id=session_prefabricate)
                 prefabricate.pipe_diameter = form.cleaned_data.get('diameter')
                 prefabricate.pipe_type = form.cleaned_data.get('type')
-                prefabricate.pipe_mark = form.cleaned_data.get('mark')
+                prefabricate.prefabricate_mark = form.cleaned_data.get('mark')
                 prefabricate.pipe_color = form.cleaned_data.get('color')
                 prefabricate.pipe_left_end = form.cleaned_data.get('left_end')
                 prefabricate.pipe_right_end = form.cleaned_data.get('right_end')
@@ -156,7 +156,7 @@ class SecondStepView(LoginRequiredMixin, View):
                 prefabricate = Prefabricate.objects.create(project=project,
                                                            pipe_diameter=form.cleaned_data.get('diameter'),
                                                            pipe_type=form.cleaned_data.get('type'),
-                                                           pipe_mark=form.cleaned_data.get('mark'),
+                                                           prefabricate_mark=form.cleaned_data.get('mark'),
                                                            pipe_color=form.cleaned_data.get('color'),
                                                            pipe_left_end=form.cleaned_data.get('left_end'),
                                                            pipe_right_end=form.cleaned_data.get('right_end'),
@@ -240,7 +240,7 @@ class MultiplyPrefabricateView(LoginRequiredMixin, View):
         prefabricate_copy = Prefabricate.objects.create(project=project,
                                                         pipe_diameter=prefabricate.pipe_diameter,
                                                         pipe_type=prefabricate.pipe_type,
-                                                        pipe_mark=prefabricate.pipe_mark,
+                                                        prefabricate_mark=prefabricate.prefabricate_mark,
                                                         pipe_color=prefabricate.pipe_color,
                                                         pipe_left_end=prefabricate.pipe_left_end,
                                                         pipe_right_end=prefabricate.pipe_right_end,

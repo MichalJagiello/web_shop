@@ -54,10 +54,10 @@ class ProjectCreationForm(forms.ModelForm):
 class PrefabricateAdminInline(admin.TabularInline):
 
     model = Prefabricate
-    fields = ('project', 'pipe_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
+    fields = ('project', 'prefabricate_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
     ordering = ('project', 'index')
     can_delete = False
-    readonly_fields = ('project', 'pipe_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
+    readonly_fields = ('project', 'prefabricate_mark', 'pipe_diameter', 'pipe_color', 'pipe_type')
 
     def get_max_num(self, request, obj=None, **kwargs):
 

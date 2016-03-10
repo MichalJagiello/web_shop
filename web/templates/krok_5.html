@@ -42,7 +42,7 @@
                     {% for prefabricate in prefabricates %}
                         <tr>
                             <td>{{ prefabricate.index|add:"1" }}</td>
-                            <td>{{ prefabricate.pipe_mark }}</td>
+                            <td>{{ prefabricate.prefabricate_mark }}</td>
                             <td>{{ prefabricate.count }}</td>
                             <td><button class="cofnij" onclick="location.href='{% url "edytuj_prefabrykat" prefabricate.index %}';">EDYTUJ</button></td>
                             <td><button class="cofnij" onclick="location.href='{% url "powiel_prefabrykat" prefabricate.index %}';">POWIEL</button></td>
