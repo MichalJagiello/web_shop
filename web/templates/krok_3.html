@@ -85,77 +85,17 @@
 					<p class="wskazowka">Wskaż kursorem miejsce i wybierz z listy typ odejścia</p><br />
 				</div>
 				<div class="model">
-					<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
-					<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
+					{% if prefabricate.pipe_diameter.small_size %}
+						<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image_small.url }});"></div>
+						<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image_small.url }});"></div>
+					{% else %}
+						<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
+						<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
+					{% endif %}
 					<div class="clear">	</div>
-						<!-- <div class="odejscia" style="top: -75px;">
-							<div class="odleglosci">
-								<input type="text" id="input_0" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 0)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_1" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 1)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_2" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 2)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_3" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 3)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_4" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 4)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_5" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 5)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_6" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 6)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_7" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 7)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_8" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 8)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_9" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 9)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_10" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 10)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_11" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 11)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_12" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 12)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_13" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 13)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_14" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 14)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_15" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 15)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_16" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 16)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_17" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 17)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_18" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 18)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_19" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 19)"/>
-							</div>
-							<div class="odleglosci">
-								<input type="text" id="input_20" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 20)"/>
-							</div>
-						</div>-->
 						<div class="odejscia">
 							<div class="lokalizacje" id="0">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 0, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -165,7 +105,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="1">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 1, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -175,7 +115,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="2">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 2, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -185,7 +125,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="3">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 3, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -195,7 +135,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="4">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 4, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -205,7 +145,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="5">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 5, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -215,7 +155,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="6">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 6, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -225,7 +165,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="7">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 7, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -235,7 +175,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="8">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 8, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -245,7 +185,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="9">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 9, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -255,7 +195,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="10">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 10, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -265,7 +205,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="11">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 11, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -275,7 +215,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="12">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 12, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -285,7 +225,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="13">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 13, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -295,7 +235,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="14">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 14, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -305,7 +245,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="15">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 15, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -315,7 +255,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="16">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 16, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -325,7 +265,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="17">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 17, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -335,7 +275,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="18">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 18, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -345,7 +285,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="19">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 19, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}
@@ -355,7 +295,7 @@
 								</ul>
 							</div>
 							<div class="lokalizacje" id="20">
-								<ul>
+								<ul class="odejscia_lista">
 									{% for outflow in outflows %}
 										<li outflow="{{ outflow.id }}" onclick="changeOutflow({{ prefabricate.id }}, {{ outflow.id }}, 20, '{{ outflow.css_class }}')">{{ outflow.name }}</li>
 									{% endfor %}

@@ -1,13 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import math
+
 from django.conf import settings
 from django.core.validators import RegexValidator
 from django.db import models
 
 from autoryzacja.models import PipesUser
 
-from pipes_types.models import PipeDiameter, PipeColor, PipeType, PipeLeftEnd, PipeRightEnd, PipeMark, PipeOutflow
+from pipes_types.models import PipeDiameter, PipeColor, PipeType, PipeLeftEnd, PipeRightEnd, PipeMark, PipeOutflow, PipeOutflowSize
 
 # Create your models here.
 
@@ -67,10 +69,24 @@ class Prefabricate(models.Model):
 
     @property
     def localizations(self):
-        localizations = [None]*21
+        localizations = []
+
+        for _ in range(21):
+            localizations.append({'outflow': None, 'distance': None, 'first': False, 'last': False})
 
         for outflow in self.outflows:
-            localizations[outflow.index] = outflow
+            if outflow.first:
+                localizations[outflow.index]['outflow'] = outflow
+                localizations[outflow.index]['distance'] = outflow.distance
+                localizations[outflow.index]['first'] = True
+            elif outflow.last:
+                localizations[outflow.index]['outflow'] = outflow
+                localizations[outflow.index]['distance'] = outflow.distance_to_end
+                localizations[outflow.index_between_previous]['distance'] = outflow.distance
+                localizations[outflow.index]['last'] = True
+            else:
+                localizations[outflow.index]['outflow'] = outflow
+                localizations[outflow.index_between_previous]['distance'] = outflow.distance
 
         return localizations
 
@@ -79,5 +95,24 @@ class PrefabricateOutflow(models.Model):
 
     prefabricate = models.ForeignKey(Prefabricate, verbose_name='Prefabrykat')
     outflow = models.ForeignKey(PipeOutflow, verbose_name='Odejście')
+    size = models.ForeignKey(PipeOutflowSize, verbose_name='Rozmiar odejścia')
     index = models.IntegerField(verbose_name='Indeks')
     distance = models.IntegerField(verbose_name='Odległość')
+    distance_to_end = models.IntegerField(verbose_name='Odległość do końca', default=1)
+
+    @property
+    def index_between_previous(self):
+        try:
+            prev = PrefabricateOutflow.objects.filter(prefabricate=self.prefabricate, index__lt=self.index).order_by('-index')[0]
+
+            return math.ceil((self.index + prev.index) / 2)
+        except IndexError:
+            return self.index
+
+    @property
+    def first(self):
+        return self == PrefabricateOutflow.objects.filter(prefabricate=self.prefabricate).order_by('index')[0]
+
+    @property
+    def last(self):
+        return self == PrefabricateOutflow.objects.filter(prefabricate=self.prefabricate).order_by('-index')[0]

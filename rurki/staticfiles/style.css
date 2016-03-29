@@ -67,6 +67,15 @@ height: 31px;
 margin: 30px auto;
 }
 
+#id_mark{
+    display: block;
+    border: 1px solid rgb(187, 187, 187);
+    padding: 8px 10px;
+    min-width: 150px;
+    max-width: 178px;
+    min-height: 30px;
+}
+
 #logowanie{
 position: absolute;
 right: 5%;
@@ -140,7 +149,7 @@ button.cofnij:hover{
 .lista_wyboru{
 display: inline;
 float: left;
-margin: 0px 27px;
+margin: 0px 25px;
 text-align: left;
 }
 
@@ -279,7 +288,25 @@ padding-right: 20px;
 font-size: 18px;
 }
 
-.dane input{
+.rubryka{
+margin: 15px auto;
+text-align: right;
+width: 500px;
+}
+
+
+.rubryka input{
+    border: solid #ddd 1px;
+    padding: 8px 10px;
+    min-width: 300px;
+}
+
+.rubruka input:hover {
+    border: solid #bbb 1px;
+    padding: 8px 10px;
+}
+
+/*.dane input{
 border: solid #ddd 1px;
 padding: 8px 10px;
 min-width: 300px;
@@ -289,13 +316,7 @@ min-width: 300px;
 border: solid #bbb 1px;
 padding: 8px 10px;
 min-width: 300px;
-}
-
-.dane .rubryka{
-margin: 15px auto;
-text-align: right;
-width: 500px;
-}
+}*/
 
 .check{
 border: solid #ddd 1px;
@@ -426,7 +447,6 @@ background-position: center 90px;
 margin-top: 20px;
 }
 
-
 #logowanie p, #logowanie button{
 display: inline;
 float: left;
@@ -532,12 +552,40 @@ padding: 5px 25px;
 
 .odejscia{
 height: 80px;
-width: 805px;
+width: 890px;
 margin-left: auto;
 margin-right: auto;
 position: absolute;
 top: 3px;
-left: 25px;
+left: 150px;
+}
+
+.odleglosci {
+    width: 38px;
+    height: 80px;
+    float: left;
+    display: inline;
+}
+
+.odleglosci input {
+    width: 38px;
+    height: 80px;
+    float: left;
+    display: inline;
+    min-width: 0px;
+    padding: inherit;
+    font-size: 30px;
+    text-align: right;
+    visibility: hidden;
+}
+
+.odleglosci input:hover {
+    min-width: 0px;
+    padding: inherit;
+}
+
+.lokalizacje input{
+text-align: center;
 }
 
 .lokalizacje{
@@ -569,8 +617,20 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.odejscie_tyl_maly{
+background-image: url(img/tyl_pomniejszony.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
 .odejscie_przod{
 background-image: url(img/przod.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_przod_maly{
+background-image: url(img/przod_pomniejszony.png);
 background-repeat: no-repeat;
 background-position: center center;
 }
@@ -581,16 +641,62 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.odejscie_dol_gwint{
+background-image: url(img/dol_gwintowany.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_maly{
+background-image: url(img/dol_pomniejszone.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_maly_gwint{
+background-image: url(img/dol_pomniejszone_gwint.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
 .odejscie_gora{
 background-image: url(img/gora.png);
 background-repeat: no-repeat;
 background-position: center center;
 }
 
+.odejscie_gora_maly{
+background-image: url(img/gora_pomniejszone.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_gwint{
+background-image: url(img/gora_gwintowany.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_maly_gwint{
+background-image: url(img/gora_pomniejszone_rowek.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscia_odleglosc {
+    width: 30px;
+    font-size: 7pt;
+    line-height: 6pt;
+    padding: 0px;
+    height: 20px;
+    float: left;
+    text-align: right;
+}
+
 .lokalizacje ul{
 visibility: hidden;
 position: absolute;
-bottom: -150px;
+bottom: -285px;
   -webkit-transition: 0.2s ease;
 -o-transition: 0.2s ease;
 transition: 0.2s ease;
@@ -599,15 +705,15 @@ transition: 0.2s ease;
 .lokalizacje:hover ul{
 visibility: visible;
 margin-left: -1px;
-bottom: -150px;
+bottom: -285px;
 
 }
 
 .lokalizacje ul li{
 list-style-type: none;
-margin-bottom: 5px;
+margin-bottom: 3px;
 border: dotted #ccc 1px;
-padding: 7px;
+padding: 3px;
 text-align: left;
   -webkit-transition: 0.2s ease;
 -o-transition: 0.2s ease;
@@ -622,8 +728,35 @@ border: dotted red 1px;
 border: solid red 1px;
 }
 
+@-moz-document url-prefix() {
+
+	.lokalizacje ul{
+	display:block;
+	visibility: hidden;
+	}
+
+	.lokalizacje:hover ul{
+	visibility: visible;
+	margin-left: -1px;
+	bottom: -285px;
+
+	} 
+
+
+.lokalizacje span{
+    margin-top: 90px;
+    margin-left: -15px;
+    background-image: url(img/strzalka_l.jpg);
+    background-repeat: no-repeat;
+    position: absolute;
+    font-size: 12px;
+    padding-top: 15px;
+    visibility: hidden;
+}
+
+
 .clear_odejscia{
-margin-top: 200px;
+margin-top: 265px;
 }
 
 

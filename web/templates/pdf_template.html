@@ -137,8 +137,20 @@ background-repeat: no-repeat;
 background-position: center right;
 }
 
+.rura_lewa_small{
+background-image: url({{ rura_lewa_small_image }});
+background-repeat: no-repeat;
+background-position: center right;
+}
+
 .rura_lewa_owal{
 background-image: url({{ rura_lewa_owal_image }});
+background-repeat: no-repeat;
+background-position: center right;
+}
+
+.rura_lewa_owal_small{
+background-image: url({{ rura_lewa_owal_small_image }});
 background-repeat: no-repeat;
 background-position: center right;
 }
@@ -149,8 +161,20 @@ background-repeat: no-repeat;
 background-position: center right;
 }
 
+.rura_lewa_rowek_small{
+background-image: url({{ rura_lewa_rowek_small_image }});
+background-repeat: no-repeat;
+background-position: center right;
+}
+
 .rura_prawa{
 background-image: url({{ rura_prawa_image }});
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+.rura_prawa_small{
+background-image: url({{ rura_prawa_small_image }});
 background-repeat: no-repeat;
 background-position: center left;
 }
@@ -161,8 +185,20 @@ background-repeat: no-repeat;
 background-position: center left;
 }
 
+.rura_prawa_owal_small{
+background-image: url({{ rura_prawa_owal_small_image }});
+background-repeat: no-repeat;
+background-position: center left;
+}
+
 .rura_prawa_rowek{
 background-image: url({{ rura_prawa_rowek_image }});
+background-repeat: no-repeat;
+background-position: center left;
+}
+
+.rura_prawa_rowek_small{
+background-image: url({{ rura_prawa_rowek_small_image }});
 background-repeat: no-repeat;
 background-position: center left;
 }
@@ -229,8 +265,58 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+
+.odejscie_tyl_maly{
+background-image: url({{ odejscie_tyl_maly_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_przod_maly{
+background-image: url({{ odejscie_przod_maly_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_gwint{
+background-image: url({{ odejscie_dol_gwint_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_maly{
+background-image: url({{ odejsce_dol_maly_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_maly_gwint{
+background-image: url({{ odejsce_dol_maly_gwint_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_maly{
+background-image: url({{ odejscie_gora_maly_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_gwint{
+background-image: url({{ odejscie_gora_gwint_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_maly_gwint{
+background-image: url({{ odejscie_gora_maly_gwint_image }});
+background-repeat: no-repeat;
+background-position: center center;
+}
+
 .lokalizacje span{
 margin-top: 90px;
+margin-left: 5px;
 background-image: url({{ strzalka_image}});
 background-repeat: no-repeat;
 position: absolute;
@@ -240,7 +326,35 @@ width: 40px;
 	visibility: hidden;
 	text-align: center;
 }
+
+.pierwsze_odejscie {
+    background-image: url({{ strzalka_lewo_image }}) !important;
+}
+
+.ostatnie_odejscie {
+    background-image: url({{ strzalka_prawo_image }}) !important;
+}
     </style>
+
+	<script>
+		function showOutflowsDistancesSpanFirst(index, css_class, distance) {
+			$("#" + index + " span").addClass("pierwsze_odejscie");
+			$("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
+			$("#input_" + index).val(distance)
+		}
+
+		function showOutflowsDistancesSpanLast(index, css_class, distance) {
+			$("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+			$("#" + index + " span").addClass("ostatnie_odejscie");
+			$("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
+			$("#input_" + index).val(distance)
+		}
+
+		function showOutflowsDistanceSpanLength(index, distance) {
+			$("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
+			$("#input_" + index).val(distance);
+		}
+	</script>
 
 </head>
 
@@ -295,20 +409,36 @@ width: 40px;
 					<h3>Odejścia</h3>
 						<ul>
 							{% for odejscie in prefabricate.outflows %}
-								<li>Odejscie {{ odejscie.outflow.name }}</li>
+								<li>Odejscie {{ odejscie.outflow.name }} rozmiar {{ odejscie.size.size }}</li>
 							{% endfor %}
 						</ul>
 				</div>
 
 				<div class="model">
-					<div class="rura {{ prefabricate.pipe_left_end.css_class }}"></div>
-					<div class="rura {{ prefabricate.pipe_right_end.css_class }}"></div>
+					{% if prefabricate.pipe_diameter.small_size %}
+                        <div class="rura {{ prefabricate.pipe_left_end.small_css_class }}"></div>
+                        <div class="rura {{ prefabricate.pipe_right_end.small_css_class }}"></div>
+					{% else %}
+                        <div class="rura {{ prefabricate.pipe_left_end.css_class }}"></div>
+                        <div class="rura {{ prefabricate.pipe_right_end.css_class }}"></div>
+					{% endif %}
 						<div class="clear"></div>
 
 						<div class="odejscia">
 							{% for localization in prefabricate.localizations %}
-								{% if localization %}
-									<div class="lokalizacje {{ localization.outflow.css_class }}"><span style="visibility: visible">{{ localization.distance }} cm</span></div>
+								{% if localization.outflow and localization.distance %}
+									<!-- <div class="lokalizacje {{ localization.outflow.css_class }}"><span style="visibility: visible">{{ localization.distance }} cm</span></div> -->
+									<div class="lokalizacje {{ localization.outflow.outflow.css_class }}">
+										{% if localization.outflow.first %}
+											<span class="pierwsze_odejscie" style="visibility: visible">{{ localization.distance }} cm</span>
+										{% else %}
+											<span class="ostatnie_odejscie" style="visibility: visible">{{ localization.distance }} cm</span>
+										{% endif %}
+									</div>
+								{% elif localization.outflow %}
+									<div class="lokalizacje {{ localization.outflow.outflow.css_class }}"><span></span></div>
+								{% elif localization.distance %}
+									<div class="lokalizacje"><span style="visibility: visible">{{ localization.distance }} cm</span></div>
 								{% else %}
 									<div class="lokalizacje"><span></span></div>
 								{% endif %}

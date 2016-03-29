@@ -28,7 +28,6 @@ function changeOutflow(prefabricate_id, outflow_id, index, css_class) {
 }
 
 function changeDistance(prefabricate_id, distance_input_id) {
-    console.log("aaa");
     var url = "outflow_distance/?prefabricate_id=" + encodeURI(prefabricate_id) + "&index=" + encodeURI(distance_input_id) + "&distance=" + encodeURI($("#input_" + distance_input_id).val());
     request.open("POST", url, true);
     request.onreadystatechange = function(){updatePageDistance(distance_input_id, $("#input_" + distance_input_id).val());};
@@ -72,10 +71,53 @@ function showOutflowsDistances(index, css_class, distance) {
     $("#input_" + index).val(distance)
 }
 
+function showOutflowsDistanceLength(index, distance) {
+    $("#" + index + " > span").css('visibility', 'visible');
+    $("#input_" + index).val(distance);
+}
+
+function showOutflowsDistanceImage(index, css_class) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+}
+
+function showOutflowsDistancesFirst(index, css_class, distance) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " span").addClass("pierwsze_odejscie");
+    $("#" + index + " > span").css('visibility', 'visible');
+    $("#input_" + index).val(distance)
+}
+
+function showOutflowsDistancesLast(index, css_class, distance) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " span").addClass("ostatnie_odejscie");
+    $("#" + index + " > span").css('visibility', 'visible');
+    $("#input_" + index).val(distance)
+}
+
 function showOutflowsDistancesSpan(index, css_class, distance) {
     $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
     $("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
 }
+
+function showOutflowsDistancesSpanFirst(index, css_class, distance) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " span").addClass("pierwsze_odejscie");
+    $("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
+    $("#input_" + index).val(distance)
+}
+
+function showOutflowsDistancesSpanLast(index, css_class, distance) {
+    $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " span").addClass("ostatnie_odejscie");
+    $("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
+    $("#input_" + index).val(distance)
+}
+
+function showOutflowsDistanceSpanLength(index, distance) {
+    $("#" + index + " > span").css({'visibility': 'visible', 'width': '40px'}).text(distance + " cm");
+    $("#input_" + index).val(distance);
+}
+
 
 function clearOutflow(index) {
     if (request.readyState == 4) {

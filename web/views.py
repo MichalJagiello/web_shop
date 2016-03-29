@@ -20,11 +20,11 @@ from django.core.mail import EmailMessage
 from autoryzacja.forms import RegisterForm
 from autoryzacja.models import PipesUser
 
-from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete, OutflowDistanceManipulateForm
+from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete, OutflowDistanceManipulateForm, OutflowSizeManipulateForm
 from projects.models import Project, Prefabricate, PrefabricateOutflow
 
 from pipes_types.forms import UpdateColorSelectForm
-from pipes_types.models import PipeType, PipeOutflow
+from pipes_types.models import PipeType, PipeOutflow, PipeOutflowSize
 
 import pdf_generator
 
@@ -142,6 +142,8 @@ class SecondStepView(LoginRequiredMixin, View):
 
             if session_prefabricate:
                 prefabricate = Prefabricate.objects.get(id=session_prefabricate)
+                if prefabricate.pipe_diameter.small_size != form.cleaned_data.get('diameter').small_size:
+                    PrefabricateOutflow.objects.filter(prefabricate=prefabricate).delete()
                 prefabricate.pipe_diameter = form.cleaned_data.get('diameter')
                 prefabricate.pipe_type = form.cleaned_data.get('type')
                 prefabricate.prefabricate_mark = form.cleaned_data.get('mark')
@@ -175,12 +177,29 @@ class ThirdStepView(LoginRequiredMixin, View):
 
     def get(self, request):
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
-        outflows = PipeOutflow.objects.filter(available=True)
+        outflows = PipeOutflow.objects.filter(available=True, small=prefabricate.pipe_diameter.small_size)
         prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
         return render(request, 'krok_3.html', {'user_full_name': request.user.get_full_name(),
                                                'prefabricate': prefabricate,
                                                'outflows': outflows,
                                                'prefabricate_outflows': prefabricate_outflows})
+
+
+class ThirdAndQuaterStepView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        prefabricate_id = request.session.get('prefabricate', None)
+        if prefabricate_id is None:
+            raise Http404("Project is saved")
+        prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
+        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
+        outflow_sizes = PipeOutflowSize.objects.filter(available=True)
+        return render(request, 'krok_3_25.html', {'user_full_name': request.user.get_full_name(),
+                                                  'prefabricate': prefabricate,
+                                                  'prefabricate_outflows': prefabricate_outflows,
+                                                  'outflow_sizes': outflow_sizes})
+
 
 
 class ThirdAndHalfStepView(LoginRequiredMixin, View):
@@ -191,7 +210,7 @@ class ThirdAndHalfStepView(LoginRequiredMixin, View):
         if prefabricate_id is None:
             raise Http404("Project is saved")
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
-        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
+        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate).order_by('index')
         return render(request, 'krok_3_5.html', {'user_full_name': request.user.get_full_name(),
                                                'prefabricate': prefabricate,
                                                'prefabricate_outflows': prefabricate_outflows})
@@ -205,7 +224,7 @@ class FourthStepView(LoginRequiredMixin, View):
         if prefabricate_id is None:
             raise Http404("Project is saved")
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
-        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
+        prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate).order_by('index')
         return render(request, 'krok_4.html', {'user_full_name': request.user.get_full_name(),
                                                'prefabricate': prefabricate,
                                                'prefabricate_outflows': prefabricate_outflows})
@@ -380,7 +399,6 @@ class OutflowsManipulateView(View):
         form = OutflowManipulateFormAdd(request.GET)
 
         if not form.is_valid():
-            print(form.errors)
             raise SuspiciousOperation("Invalid form")
 
         prefabricate = Prefabricate.objects.get(id=form.cleaned_data.get('prefabricate_id'))
@@ -397,7 +415,8 @@ class OutflowsManipulateView(View):
             PrefabricateOutflow.objects.create(prefabricate=prefabricate,
                                                outflow=outflow,
                                                index=index,
-                                               distance=1)
+                                               distance=1,
+                                               size=PipeOutflowSize.objects.filter(available=True)[0])
 
         return HttpResponse()
 
@@ -429,7 +448,42 @@ class OutflowDistanceManipulateView(View):
         form = OutflowDistanceManipulateForm(request.GET)
 
         if not form.is_valid():
-            print(form.errors)
+            raise SuspiciousOperation("Invalid form")
+
+        prefabricate = Prefabricate.objects.get(id=form.cleaned_data.get('prefabricate_id'))
+        index = form.cleaned_data.get('index')
+
+        prefabricate_outflow = None
+
+        try:
+            prefabricate_outflow = PrefabricateOutflow.objects.get(prefabricate=prefabricate,
+                                            index=index)
+        except PrefabricateOutflow.DoesNotExist:
+            for po in PrefabricateOutflow.objects.filter(prefabricate=prefabricate):
+                if po.index_between_previous == index:
+                    prefabricate_outflow = po
+            if not prefabricate_outflow:
+                raise SuspiciousOperation("Outflow not exists")
+
+        if prefabricate_outflow.last and prefabricate_outflow.index == index:
+            prefabricate_outflow.distance_to_end = form.cleaned_data.get('distance')
+        else:
+            prefabricate_outflow.distance = form.cleaned_data.get('distance')
+        prefabricate_outflow.save()
+
+        return HttpResponse()
+
+
+class OuutflowSizeManipulateView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(OuutflowSizeManipulateView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        form = OutflowSizeManipulateForm(request.GET)
+
+        if not form.is_valid():
             raise SuspiciousOperation("Invalid form")
 
         prefabricate = Prefabricate.objects.get(id=form.cleaned_data.get('prefabricate_id'))
@@ -437,16 +491,16 @@ class OutflowDistanceManipulateView(View):
 
         try:
             prefabricate_outflow = PrefabricateOutflow.objects.get(prefabricate=prefabricate,
-                                            index=index)
+                                                                   index=index)
         except PrefabricateOutflow.DoesNotExist:
             raise SuspiciousOperation("Outflow not exists")
 
-        print(form.cleaned_data)
 
-        prefabricate_outflow.distance = form.cleaned_data.get('distance')
+        prefabricate_outflow.size = form.cleaned_data.get('size')
         prefabricate_outflow.save()
 
         return HttpResponse()
+
 
 class PrintPdfFileView(LoginRequiredMixin, View):
 
@@ -463,16 +517,74 @@ class PrintPdfFileView(LoginRequiredMixin, View):
                                                                   'prefabricates': prefabricates,
                                                                   'prefabricate_outflows': prefabricates_outflows,
                                                                   'rura_lewa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png'),
+                                                                  'rura_lewa_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_popmniejszona.png'),
                                                                   'rura_lewa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_lewa.png'),
+                                                                  'rura_lewa_rowek_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_lewa_popmniejszona.png'),
                                                                   'rura_lewa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_lewa.png'),
+                                                                  'rura_lewa_owal_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_lewa_popmniejszona.png'),
                                                                   'rura_prawa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png'),
+                                                                  'rura_prawa_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_popmniejszona.png'),
                                                                   'rura_prawa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_prawa.png'),
+                                                                  'rura_prawa_owal_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_prawa_popmniejszona.png'),
                                                                   'rura_prawa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_prawa.png'),
+                                                                  'rura_prawa_rowek_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_prawa_popmniejszona.png'),
                                                                   'odejscie_tyl_image': os.path.join(settings.BASE_DIR, 'static/img/tyl.png'),
                                                                   'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
                                                                   'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
                                                                   'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
-                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
-                                                                  'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png')})
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_s.jpg'),
+                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
+                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_p.jpg'),
+                                                                  'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png'),
+                                                                  'odejscie_tyl_maly_image': os.path.join(settings.BASE_DIR, 'static/img/tyl_pomniejszony.png'),
+                                                                  'odejscie_przod_maly_image': os.path.join(settings.BASE_DIR, 'static/img/przod_pomniejszony.png'),
+                                                                  'odejscie_dol_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/dol_gwintowany.png'),
+                                                                  'odejsce_dol_maly_image': os.path.join(settings.BASE_DIR, 'static/img/dol_pomniejszone.png'),
+                                                                  'odejsce_dol_maly_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/dol_pomniejszone_gwint.png'),
+                                                                  'odejscie_gora_maly_image': os.path.join(settings.BASE_DIR, 'static/img/gora_pomniejszone.png'),
+                                                                  'odejscie_gora_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/gora_gwintowany.png'),
+                                                                  'odejscie_gora_maly_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/gora_pomniejszone_rowek.png')})
+
+        return HttpResponse(pdf_generator.generate(template), 'application/pdf')
+
+class PrintPrefabricatePdfFileView(LoginRequiredMixin, View):
+
+    def get(self, request, prefabricate_index):
+        project = Project.objects.get(id=request.session.get('project'))
+        prefabricates = Prefabricate.objects.filter(project=project, index=prefabricate_index)
+        prefabricates_outflows = PrefabricateOutflow.objects.filter(prefabricate__in=prefabricates)
+
+        template = render_to_string('pdf_template.html', {'user_full_name': request.user.get_full_name(),
+                                                                  'project': project,
+                                                                  'prefabricates': prefabricates,
+                                                                  'prefabricate_outflows': prefabricates_outflows,
+                                                                  'rura_lewa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png'),
+                                                                  'rura_lewa_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_popmniejszona.png'),
+                                                                  'rura_lewa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_lewa.png'),
+                                                                  'rura_lewa_rowek_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_lewa_popmniejszona.png'),
+                                                                  'rura_lewa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_lewa.png'),
+                                                                  'rura_lewa_owal_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_lewa_popmniejszona.png'),
+                                                                  'rura_prawa_image': os.path.join(settings.BASE_DIR, 'static/img/rura.png'),
+                                                                  'rura_prawa_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_popmniejszona.png'),
+                                                                  'rura_prawa_owal_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_prawa.png'),
+                                                                  'rura_prawa_owal_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_owal_prawa_popmniejszona.png'),
+                                                                  'rura_prawa_rowek_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_prawa.png'),
+                                                                  'rura_prawa_rowek_small_image': os.path.join(settings.BASE_DIR, 'static/img/rura_rowek_prawa_popmniejszona.png'),
+                                                                  'odejscie_tyl_image': os.path.join(settings.BASE_DIR, 'static/img/tyl.png'),
+                                                                  'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
+                                                                  'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
+                                                                  'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_s.jpg'),
+                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
+                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_p.jpg'),
+                                                                  'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png'),
+                                                                  'odejscie_tyl_maly_image': os.path.join(settings.BASE_DIR, 'static/img/tyl_pomniejszony.png'),
+                                                                  'odejscie_przod_maly_image': os.path.join(settings.BASE_DIR, 'static/img/przod_pomniejszony.png'),
+                                                                  'odejscie_dol_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/dol_gwintowany.png'),
+                                                                  'odejsce_dol_maly_image': os.path.join(settings.BASE_DIR, 'static/img/dol_pomniejszone.png'),
+                                                                  'odejsce_dol_maly_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/dol_pomniejszone_gwint.png'),
+                                                                  'odejscie_gora_maly_image': os.path.join(settings.BASE_DIR, 'static/img/gora_pomniejszone.png'),
+                                                                  'odejscie_gora_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/gora_gwintowany.png'),
+                                                                  'odejscie_gora_maly_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/gora_pomniejszone_rowek.png')})
 
         return HttpResponse(pdf_generator.generate(template), 'application/pdf')

@@ -37,6 +37,7 @@
                         <td>Ilość</td>
                         <td>Edytuj</td>
                         <td>Powiel</td>
+                        <td>PDF</td>
                         <td>Usuń</td>
                     </tr>
                     {% for prefabricate in prefabricates %}
@@ -46,6 +47,7 @@
                             <td>{{ prefabricate.count }}</td>
                             <td><button class="cofnij" onclick="location.href='{% url "edytuj_prefabrykat" prefabricate.index %}';">EDYTUJ</button></td>
                             <td><button class="cofnij" onclick="location.href='{% url "powiel_prefabrykat" prefabricate.index %}';">POWIEL</button></td>
+                            <td><button class="cofnij" onclick="location.href='{% url "pdf_prefabrykat" prefabricate.index %}';">PDF</button></td>
                             {% if prefabricates|length == 1 %}
                                 <td><button disabled class="cofnij" onclick="location.href='{% url "usun_prefabrykat" prefabricate.index %}';">USUŃ</button></td>
                             {% else %}

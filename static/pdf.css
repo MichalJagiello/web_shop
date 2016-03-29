@@ -196,8 +196,20 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.odejscie_tyl_maly{
+background-image: url(img/tyl_pomniejszony.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
 .odejscie_przod{
 background-image: url(img/przod.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_przod_maly{
+background-image: url(img/przod_pomniejszony.png);
 background-repeat: no-repeat;
 background-position: center center;
 }
@@ -208,8 +220,44 @@ background-repeat: no-repeat;
 background-position: center center;
 }
 
+.odejscie_dol_gwint{
+background-image: url(img/dol_gwintowany.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_maly{
+background-image: url(img/dol_pomniejszone.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_dol_maly_gwint{
+background-image: url(img/dol_pomniejszone_gwint.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
 .odejscie_gora{
 background-image: url(img/gora.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_maly{
+background-image: url(img/gora_pomniejszone.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_gwint{
+background-image: url(img/gora_gwintowany.png);
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+.odejscie_gora_maly_gwint{
+background-image: url(img/gora_pomniejszone_rowek.png);
 background-repeat: no-repeat;
 background-position: center center;
 }

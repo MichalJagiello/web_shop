@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block wrapper %}
+
+<script src="{% static 'outflow_select.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+<script src="{% static 'outflow_size_change.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+
+	<div class="wrapper">
+
+
+		<div id="top_krok">
+
+			<div id="logowanie">
+				<button class="active">Zalogowany</button>
+				<p class="login">{{ user_full_name }}</p>
+				<button onclick="location_change({% url 'django.contrib.auth.views.logout' %})">Wyloguj się</button>
+			</div>
+
+			<div class="logo">
+				<a href="/"><img src="{% static "img/logo.png" %}"/></a>
+			</div>
+
+		</div>
+
+	    <div class="content_krok">
+            <h3>Krok <span class="numeracja">4</span></h3>
+            <p>Podaj rozmiar odejscia.</p><div class="dane">
+
+                        <div class="zdefiniowane">
+					<p>wybrane oznaczenie</p>
+					<div class="check"><p>{{ prefabricate.prefabricate_mark }}</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrana średnica</p>
+					<div class="check"><p>{{ prefabricate.pipe_diameter }}</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrany rodzaj</p>
+					<div class="check"><p>{{ prefabricate.pipe_type }}</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrany kolor</p>
+					<div class="check">
+						<p>
+							{% if prefabricate.pipe_color %}
+								{{ prefabricate.pipe_color }}
+							{% else %}
+								---------
+							{% endif %}
+						</p></div>
+					</div>
+
+					<div class="zdefiniowane">
+					<p>wybrana ilość</p>
+					<div class="check"><p>{{ prefabricate.count }}</p></div>
+					</div>
+
+
+                    <div class="clear"></div>
+                    <br /> <br />
+
+        </div>
+			<div class="dane">
+
+				<div>
+					<p class="wskazowka"></p><br />
+				</div>
+
+                <div class="model">
+					{% if prefabricate.pipe_diameter.small_size %}
+						<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image_small.url }});"></div>
+						<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image_small.url }});"></div>
+					{% else %}
+						<div class="rura rura_lewa" style="background-image: url({{ prefabricate.pipe_left_end.pipe_image.url }});"></div>
+						<div class="rura rura_prawa" style="background-image: url({{ prefabricate.pipe_right_end.pipe_image.url }});"></div>
+					{% endif %}
+					<div class="clear"></div>
+
+					<div class="odejscia">
+						<!-- <div class="lokalizacje odejscie_tyl"><span><input class="odejscia_odleglosc" type="text"></span></div> -->
+						<div class="lokalizacje" id="0"><div></div>
+							<ul class="odejscia_rozmiary_lista">
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 0)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="1"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 1)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="2"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 2)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="3"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 3)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="4"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 4)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="5"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 5)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="6"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 6)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="7"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 7)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="8"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 8)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="9"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 9)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="10"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 10)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="11"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 11)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="12"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 12)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="13"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 13)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="14"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 14)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="15"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 15)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="16"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 16)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="17"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 17)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="18"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 18)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="19"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 19)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="lokalizacje" id="20"><div></div>
+							<ul>
+								{% for outflow_size in outflow_sizes %}
+									<li outflow="{{ outflow_size.id }}" onclick="changeOutflowSize({{ prefabricate.id }}, {{ outflow_size.id }}, {{ outflow_size.size }}, 20)">{{ outflow_size.size }}</li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+
+				</div>
+
+                {% for prefabricate_outflow in prefabricate_outflows %}
+                    <script>
+						showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});
+						showOutflowSizesList({{ prefabricate_outflow.index }});
+						showOutflowSize({{ prefabricate_outflow.index }}, {{ prefabricate_outflow.size.size }});
+					</script>
+                {% endfor %}
+
+				<div class="clear"></div>
+				<div style="width: 100%; height: 250px; clear: both;"></div>
+				<button onclick="location.href='{% url "krok_3" %}';" class="cofnij">COFNIJ</button>
+				<button onclick="location.href='{% url "krok_5" %}';" class="dalej">DALEJ</button>
+
+			</div>
+		</div>
+
+		<div class="push"></div>
+	</div>
+
+{% endblock %}

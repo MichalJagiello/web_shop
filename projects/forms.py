@@ -9,7 +9,7 @@ from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
 from projects.models import Project, Prefabricate
-from pipes_types.models import PipeMark, PipeRightEnd, PipeLeftEnd, PipeColor, PipeDiameter, PipeType, PipeOutflow
+from pipes_types.models import PipeMark, PipeRightEnd, PipeLeftEnd, PipeColor, PipeDiameter, PipeType, PipeOutflow, PipeOutflowSize
 
 
 class EditProjectForm(forms.Form):
@@ -61,8 +61,6 @@ class PipeEndModelChoiceField(forms.ModelChoiceField):
         image = conditional_escape(obj.image.url)
 
         label = "<img src='{}' />".format(image)
-
-        print(mark_safe(label))
 
         return mark_safe(label)
 
@@ -141,3 +139,8 @@ class OutflowManipulateFormDelete(forms.Form):
 class OutflowDistanceManipulateForm(OutflowManipulateFormDelete):
 
     distance = forms.IntegerField(min_value=0)
+
+
+class OutflowSizeManipulateForm(OutflowManipulateFormDelete):
+
+    size = forms.ModelChoiceField(PipeOutflowSize.objects.filter(available=True))
