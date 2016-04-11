@@ -61,8 +61,15 @@ function updatePageDistance(index, distance) {
 
 function showOutflows(index, css_class, distance) {
     $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
-    //$("#input_" + index).css('visibility', 'visible');
+    $("#input_" + index).css('visibility', 'visible');
     //$("#input_" + index).val(distance)
+}
+
+function clear_text_input(index) {
+    for(i = 0; i <= 21; ++i) {
+        $("#input_" + i).val("");
+        $("#input_" + i).css('visibility', 'hidden');
+    }
 }
 
 function showOutflowsDistances(index, css_class, distance) {
@@ -72,26 +79,29 @@ function showOutflowsDistances(index, css_class, distance) {
 }
 
 function showOutflowsDistanceLength(index, distance) {
+    console.log(index);
     $("#" + index + " > span").css('visibility', 'visible');
+    $("#input_" + index).css('visibility', 'visible');
     $("#input_" + index).val(distance);
 }
 
 function showOutflowsDistanceImage(index, css_class) {
     $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
+    $("#" + index + " span").addClass("pierwsze_odejscie");
 }
 
 function showOutflowsDistancesFirst(index, css_class, distance) {
     $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
     $("#" + index + " span").addClass("pierwsze_odejscie");
     $("#" + index + " > span").css('visibility', 'visible');
-    $("#input_" + index).val(distance)
+    //$("#input_" + index).val(distance)
 }
 
 function showOutflowsDistancesLast(index, css_class, distance) {
     $("#" + index).removeClass().addClass("lokalizacje").addClass(css_class);
     $("#" + index + " span").addClass("ostatnie_odejscie");
     $("#" + index + " > span").css('visibility', 'visible');
-    $("#input_" + index).val(distance)
+    //$("#input_" + index).val(distance)
 }
 
 function showOutflowsDistancesSpan(index, css_class, distance) {

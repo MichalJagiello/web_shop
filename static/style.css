@@ -720,10 +720,12 @@ transition: 0.2s ease;
 }
 
 .lokalizacje ul li:hover{
+margin-bottom: 2px;
 border: dotted red 1px;
 }
 
 .lokalizacje ul li:active{
+margin-bottom: 2px;
 border: solid red 1px;
 }
 
@@ -746,24 +748,77 @@ border: solid red 1px;
 .lokalizacje span{
     margin-top: 90px;
     margin-left: -15px;
-    background-image: url(img/strzalka_s.jpg);
+    background-image: url(img/prosta.jpg);
     background-repeat: no-repeat;
     position: absolute;
     font-size: 12px;
     padding-top: 15px;
-    visibility: hidden;
+    width: 38px;
+    background-size: 38px;
+    #visibility: hidden;
+}
+
+.lokalizacje_poczatek {
+    width: 18px;
+    margin-left: -13px;
+    float: left;
+    display: inline;
+}
+
+.lokalizacje_koniec {
+    width: 10px;
+    margin-left: 6px;
+    float: left;
+    display: inline;
+}
+
+.lokalizacje_poczatek span {
+    background-image: url(img/lewa.jpg) !important;
+    background-size: 38px;
+    margin-top: 90px;
+    margin-left: -8px;
+    background-repeat: no-repeat;
+    position: absolute;
+    font-size: 12px;
+    padding-top: 15px;
+    width: 18px;
+}
+
+.lokalizacje_koniec span {
+    background-image: url(img/prawa2.jpg) !important;
+    background-size: 13px;
+    margin-top: 90px;
+    margin-left: -8px;
+    background-repeat: no-repeat;
+    position: absolute;
+    font-size: 12px;
+    padding-top: 14px;
+    width: 18px;
+}
+
+.odejscia_poczatek {
+    background-image: url(img/lewa.jpg) !important;
+}
+
+.odejscia_koniec {
+    background-image: url(img/prawa.jpg) !important;
 }
 
 .pierwsze_odejscie {
-    background-image: url(img/strzalka_l.jpg) !important;
+    background-image: url(img/srodek.jpg) !important;
 }
 
 .ostatnie_odejscie {
-    background-image: url(img/strzalka_p.jpg) !important;
+    background-image: url(img/srodek.jpg) !important;
+}
+
+.pierwsze_ostatnie_odejscie {
+    background-image: url(img/srodek.jpg) !important;
 }
 
 .lokalizacje div {
     margin-top: -15px;
+    font-size: 12px;
 }
 
 .clear_odejscia{

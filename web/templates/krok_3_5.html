@@ -81,6 +81,7 @@
 
 					<div class="odejscia">
 						<!-- <div class="lokalizacje odejscie_tyl"><span><input class="odejscia_odleglosc" type="text"></span></div> -->
+						<div class="lokalizacje_poczatek"><span></span></div>
 						<div class="lokalizacje" id="0"><span><input id="input_0" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 0)"></span></div>
 						<div class="lokalizacje" id="1"><span><input id="input_1" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 1)"></span></div>
 						<div class="lokalizacje" id="2"><span><input id="input_2" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 2)"></span></div>
@@ -102,20 +103,23 @@
 						<div class="lokalizacje" id="18"><span><input id="input_18" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 18)"></span></div>
 						<div class="lokalizacje" id="19"><span><input id="input_19" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 19)"></span></div>
 						<div class="lokalizacje" id="20"><span><input id="input_20" class="odejscia_odleglosc" type="text" pattern="[0-9]*" onchange="changeDistance({{ prefabricate.id }}, 20)"></span></div>
+						<div class="lokalizacje_koniec"><span></span></div>
 					</div>
 
 				</div>
 
+				<script>clear_text_input();</script>
                 {% for prefabricate_outflow in prefabricate_outflows %}
-                    <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
 					{% if forloop.first %}
                     	<script>
-                            showOutflowsDistancesFirst({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});
+                            showOutflowsDistanceImage({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');
+							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
                         </script>
 					{% elif forloop.last %}
 						<script>
-							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
 							showOutflowsDistancesLast({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance_to_end }});
+							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
+							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_end }}, {{ prefabricate_outflow.distance_to_end }});
 						</script>
 					{% else %}
 						<script>

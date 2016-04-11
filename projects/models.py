@@ -77,11 +77,11 @@ class Prefabricate(models.Model):
         for outflow in self.outflows:
             if outflow.first:
                 localizations[outflow.index]['outflow'] = outflow
-                localizations[outflow.index]['distance'] = outflow.distance
+                localizations[outflow.index_between_previous]['distance'] = outflow.distance
                 localizations[outflow.index]['first'] = True
             elif outflow.last:
                 localizations[outflow.index]['outflow'] = outflow
-                localizations[outflow.index]['distance'] = outflow.distance_to_end
+                localizations[outflow.index_between_end]['distance'] = outflow.distance_to_end
                 localizations[outflow.index_between_previous]['distance'] = outflow.distance
                 localizations[outflow.index]['last'] = True
             else:
@@ -107,7 +107,11 @@ class PrefabricateOutflow(models.Model):
 
             return math.ceil((self.index + prev.index) / 2)
         except IndexError:
-            return self.index
+            return math.floor(self.index / 2)
+
+    @property
+    def index_between_end(self):
+        return self.index + math.floor((21 - self.index) / 2)
 
     @property
     def first(self):

@@ -177,7 +177,7 @@ class ThirdStepView(LoginRequiredMixin, View):
 
     def get(self, request):
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
-        outflows = PipeOutflow.objects.filter(available=True, small=prefabricate.pipe_diameter.small_size)
+        outflows = PipeOutflow.objects.filter(available=True, small=prefabricate.pipe_diameter.small_size).order_by('name')
         prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
         return render(request, 'krok_3.html', {'user_full_name': request.user.get_full_name(),
                                                'prefabricate': prefabricate,
@@ -321,9 +321,10 @@ class FinishProjectView(LoginRequiredMixin, View):
                                                                   'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
                                                                   'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
                                                                   'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
-                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_s.jpg'),
-                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
-                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_p.jpg'),
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/srodek.jpg'),
+                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/lewa.jpg'),
+                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/prawa2.jpg'),
+                                                                  'strzalka_prosta_image': os.path.join(settings.BASE_DIR, 'static/img/prosta.jpg'),
                                                                   'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png'),
                                                                   'odejscie_tyl_maly_image': os.path.join(settings.BASE_DIR, 'static/img/tyl_pomniejszony.png'),
                                                                   'odejscie_przod_maly_image': os.path.join(settings.BASE_DIR, 'static/img/przod_pomniejszony.png'),
@@ -476,12 +477,12 @@ class OutflowDistanceManipulateView(View):
                                             index=index)
         except PrefabricateOutflow.DoesNotExist:
             for po in PrefabricateOutflow.objects.filter(prefabricate=prefabricate):
-                if po.index_between_previous == index:
+                if po.index_between_previous == index or (po.last and po.index_between_end == index):
                     prefabricate_outflow = po
             if not prefabricate_outflow:
                 raise SuspiciousOperation("Outflow not exists")
 
-        if prefabricate_outflow.last and prefabricate_outflow.index == index:
+        if prefabricate_outflow.last and prefabricate_outflow.index_between_end == index:
             prefabricate_outflow.distance_to_end = form.cleaned_data.get('distance')
         else:
             prefabricate_outflow.distance = form.cleaned_data.get('distance')
@@ -548,9 +549,10 @@ class PrintPdfFileView(LoginRequiredMixin, View):
                                                                   'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
                                                                   'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
                                                                   'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
-                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_s.jpg'),
-                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
-                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_p.jpg'),
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/srodek.jpg'),
+                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/lewa.jpg'),
+                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/prawa2.jpg'),
+                                                                  'strzalka_prosta_image': os.path.join(settings.BASE_DIR, 'static/img/prosta.jpg'),
                                                                   'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png'),
                                                                   'odejscie_tyl_maly_image': os.path.join(settings.BASE_DIR, 'static/img/tyl_pomniejszony.png'),
                                                                   'odejscie_przod_maly_image': os.path.join(settings.BASE_DIR, 'static/img/przod_pomniejszony.png'),
@@ -590,9 +592,10 @@ class PrintPrefabricatePdfFileView(LoginRequiredMixin, View):
                                                                   'odejscie_przod_image': os.path.join(settings.BASE_DIR, 'static/img/przod.png'),
                                                                   'odejscie_dol_image': os.path.join(settings.BASE_DIR, 'static/img/dol.png'),
                                                                   'odejscie_gora_image': os.path.join(settings.BASE_DIR, 'static/img/gora.png'),
-                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_s.jpg'),
-                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_l.jpg'),
-                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/strzalka_p.jpg'),
+                                                                  'strzalka_image': os.path.join(settings.BASE_DIR, 'static/img/srodek.jpg'),
+                                                                  'strzalka_lewo_image': os.path.join(settings.BASE_DIR, 'static/img/lewa.jpg'),
+                                                                  'strzalka_prawo_image': os.path.join(settings.BASE_DIR, 'static/img/prawa2.jpg'),
+                                                                  'strzalka_prosta_image': os.path.join(settings.BASE_DIR, 'static/img/prosta.jpg'),
                                                                   'logo_image': os.path.join(settings.BASE_DIR, 'static/img/logo.png'),
                                                                   'odejscie_tyl_maly_image': os.path.join(settings.BASE_DIR, 'static/img/tyl_pomniejszony.png'),
                                                                   'odejscie_przod_maly_image': os.path.join(settings.BASE_DIR, 'static/img/przod_pomniejszony.png'),

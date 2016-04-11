@@ -25,7 +25,7 @@ function showOutflowSizesList(index) {
 };
 
 function showOutflowSize(index, value) {
-    $("#" + index + " div").text(value);
+    $("#" + index + " div").text("DN " + value);
 };
 
 function changeOutflowSize(prefabricate_id, size_id, size_val, index) {
