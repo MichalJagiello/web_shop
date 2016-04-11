@@ -110,7 +110,13 @@
 
 				<script>clear_text_input();</script>
                 {% for prefabricate_outflow in prefabricate_outflows %}
-					{% if forloop.first %}
+					{% if forloop.last %}
+						<script>
+							showOutflowsDistancesLast({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance_to_end }});
+							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
+							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_end }}, {{ prefabricate_outflow.distance_to_end }});
+						</script>
+					{% elif forloop.first %}
                     	<script>
                             showOutflowsDistanceImage({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');
 							showOutflowsDistanceLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
