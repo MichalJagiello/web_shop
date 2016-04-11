@@ -602,6 +602,11 @@ background-position: -1px -1px;
 margin-right: -2px;
 }
 
+.lokalizacje:hover span {
+    margin-top: 89px;
+    margin-left: -16px;
+}
+
 .model{
 
 clear: both;
