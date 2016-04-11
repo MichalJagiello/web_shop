@@ -110,17 +110,17 @@
 
 				{% for prefabricate_outflow in prefabricate_outflows %}
                     <script>showOutflows({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance }});</script>
-					{% if forloop.first %}
-                    	<script>
-                            showOutflowsDistanceImage({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');
-							showOutflowsDistanceSpanLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
-                        </script>
-					{% elif forloop.last %}
+					{% if forloop.last %}
 						<script>
 							showOutflowsDistanceImage({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}', {{ prefabricate_outflow.distance_to_end }});
 							showOutflowsDistanceSpanLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
 							showOutflowsDistanceSpanLength({{ prefabricate_outflow.index_between_end }}, {{ prefabricate_outflow.distance_to_end }});
 						</script>
+					{% elif forloop.first %}
+                    	<script>
+                            showOutflowsDistanceImage({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');
+							showOutflowsDistanceSpanLength({{ prefabricate_outflow.index_between_previous }}, {{ prefabricate_outflow.distance }});
+                        </script>
 					{% else %}
 						<script>
                             showOutflowsDistanceImage({{ prefabricate_outflow.index }}, '{{ prefabricate_outflow.outflow.css_class}}');
