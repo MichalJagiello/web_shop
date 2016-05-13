@@ -269,7 +269,8 @@ class MultiplyPrefabricateView(LoginRequiredMixin, View):
             PrefabricateOutflow.objects.create(prefabricate=prefabricate_copy,
                                                outflow=prefabricate_outflow.outflow,
                                                index=prefabricate_outflow.index,
-                                               distance=prefabricate_outflow.distance)
+                                               distance=prefabricate_outflow.distance,
+                                               size=prefabricate_outflow.size)
         return redirect('zapisz_projekt')
 
 class EditPrefabricateView(LoginRequiredMixin, View):
