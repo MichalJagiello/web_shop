@@ -21,7 +21,7 @@ if (!request)
     alert("Error initializing XMLHttpRequest!");
 
 function showOutflowSizesList(index) {
-    $("#" + index + " ul").addClass("odejscia_lista");
+    $("#" + index + " ul").addClass("odejscia_rozmiary_lista");
 };
 
 function showOutflowSize(index, value) {

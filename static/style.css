@@ -71,8 +71,8 @@ margin: 30px auto;
     display: block;
     border: 1px solid rgb(187, 187, 187);
     padding: 8px 10px;
-    min-width: 140px;
-    max-width: 140px;
+    min-width: 130px;
+    max-width: 130px;
     min-height: 30px;
 }
 
@@ -701,13 +701,19 @@ background-position: center center;
 .lokalizacje ul{
 visibility: hidden;
 position: absolute;
-bottom: -50px;
+bottom: -100px;
   -webkit-transition: 0.2s ease;
 -o-transition: 0.2s ease;
 transition: 0.2s ease;
 }
 
 .lokalizacje:hover .odejscia_lista{
+visibility: visible;
+margin-left: -1px;
+bottom: -260px;
+}
+
+.lokalizacje:hover .odejscia_rozmiary_lista{
 visibility: visible;
 margin-left: -1px;
 bottom: -100px;
