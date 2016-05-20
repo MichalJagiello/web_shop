@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib import admin
 
-from .models import PipeColor, PipeDiameter, PipeType, PipeMark, PipeLeftEnd, PipeRightEnd, PipeOutflow, PipeOutflowSize
+from .models import PipeColor, PipeDiameter, PipeType, PipeMark, PipeLeftEnd, PipeRightEnd, PipeOutflow, PipeOutflowSize, \
+    PipeDiameterAvailablePipeOutflow
 # Register your models here.
 
 
@@ -69,6 +70,11 @@ class PipeOutflowSizeAdmin(admin.ModelAdmin):
     ordering = ('size',)
 
 
+class PipeDiameterAvailablePipeOutflowAdmin(admin.ModelAdmin):
+
+    ordering = ('diameter__size', 'size__size')
+
+
 
 admin.site.register(PipeColor, PipeColorAdmin)
 admin.site.register(PipeDiameter, PipeDiameterAdmin)
@@ -78,3 +84,4 @@ admin.site.register(PipeLeftEnd, PipeEndAdmin)
 admin.site.register(PipeRightEnd, PipeEndAdmin)
 admin.site.register(PipeOutflow, PipeOutflowAdmin)
 admin.site.register(PipeOutflowSize, PipeOutflowSizeAdmin)
+admin.site.register(PipeDiameterAvailablePipeOutflow, PipeDiameterAvailablePipeOutflowAdmin)

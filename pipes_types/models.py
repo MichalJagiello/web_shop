@@ -23,7 +23,7 @@ class PipeDiameter(models.Model):
 
 
 class PipeType(models.Model):
-    name = models.CharField(max_length=16, verbose_name='Typ rury')
+    name = models.CharField(max_length=32, verbose_name='Typ rury')
     available = models.BooleanField(default=True, verbose_name='Dostępny')
     color_allowed = models.BooleanField(default=True, verbose_name='Dostępny z kolorem')
 
@@ -119,3 +119,16 @@ class PipeOutflowSize(models.Model):
 
     def __str__(self):
         return "Rozmiar odejścia: {}".format(self.size)
+
+
+class PipeDiameterAvailablePipeOutflow(models.Model):
+
+    diameter = models.ForeignKey(PipeDiameter, verbose_name='Średnica rury')
+    size = models.ForeignKey(PipeOutflowSize, verbose_name='Rozmiar odejścia')
+
+    class Meta:
+        verbose_name = 'Odejście dostępne dla rozmiaru rury'
+        verbose_name_plural = 'Odejścia dostępne dla rozmiaru rury'
+
+    def __str__(self):
+        return "Średnica: {}, rozmiar: {}".format(self.diameter, self.size)

@@ -60,7 +60,7 @@ class PipeEndModelChoiceField(forms.ModelChoiceField):
         """
         image = conditional_escape(obj.image.url)
 
-        label = "<img src='{}' />".format(image)
+        label = "<img src='{}' title='{}'/>".format(image, obj.name)
 
         return mark_safe(label)
 
@@ -144,3 +144,18 @@ class OutflowDistanceManipulateForm(OutflowManipulateFormDelete):
 class OutflowSizeManipulateForm(OutflowManipulateFormDelete):
 
     size = forms.ModelChoiceField(PipeOutflowSize.objects.filter(available=True))
+
+
+class ProjectCommentForm(forms.Form):
+
+    project_id = forms.IntegerField()
+    comment = forms.CharField(max_length=4096)
+
+    def clean_project_id(self):
+        project_id = self.cleaned_data.get('project_id')
+
+        try:
+            Project.objects.get(id=project_id)
+        except Project.DoesNotExist:
+            raise forms.ValidationError("Projekt nie istnieje")
+        return project_id

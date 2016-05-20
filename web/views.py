@@ -20,11 +20,11 @@ from django.core.mail import EmailMessage
 from autoryzacja.forms import RegisterForm
 from autoryzacja.models import PipesUser
 
-from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete, OutflowDistanceManipulateForm, OutflowSizeManipulateForm
+from projects.forms import NewProjectForm, EditProjectForm, AddPrefabricateForm, OutflowManipulateFormAdd, OutflowManipulateFormDelete, OutflowDistanceManipulateForm, OutflowSizeManipulateForm, ProjectCommentForm
 from projects.models import Project, Prefabricate, PrefabricateOutflow
 
 from pipes_types.forms import UpdateColorSelectForm
-from pipes_types.models import PipeType, PipeOutflow, PipeOutflowSize
+from pipes_types.models import PipeType, PipeOutflow, PipeOutflowSize, PipeDiameterAvailablePipeOutflow
 
 import pdf_generator
 
@@ -194,7 +194,9 @@ class ThirdAndQuaterStepView(LoginRequiredMixin, View):
             raise Http404("Project is saved")
         prefabricate = Prefabricate.objects.get(id=request.session.get('prefabricate'))
         prefabricate_outflows = PrefabricateOutflow.objects.filter(prefabricate=prefabricate)
-        outflow_sizes = PipeOutflowSize.objects.filter(available=True)
+        # outflow_sizes = PipeOutflowSize.objects.filter(available=True).order_by('size')
+        outflow_sizes = [x.size for x in PipeDiameterAvailablePipeOutflow.objects.filter(diameter=prefabricate.pipe_diameter,
+                                                                                         size__available=True)]
         return render(request, 'krok_3_25.html', {'user_full_name': request.user.get_full_name(),
                                                   'prefabricate': prefabricate,
                                                   'prefabricate_outflows': prefabricate_outflows,
@@ -336,7 +338,12 @@ class FinishProjectView(LoginRequiredMixin, View):
                                                                   'odejscie_gora_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/gora_gwintowany.png'),
                                                                   'odejscie_gora_maly_gwint_image': os.path.join(settings.BASE_DIR, 'static/img/gora_pomniejszone_rowek.png')})
 
-        email = EmailMessage('Nowy projekt', 'Nowy projekt stworzony przez klienta', 'dekk@pipesprefabrication.pl', ['michal.jgl@gmail.com', 'info@dekk.pl', 'kontakt@strony-piaseczno.pl'])
+        if len(project.comment):
+            mail_content = "Nowy projekt stworzony przez klienta\n\nKomentarz do projektu:\n'{}'".format(project.comment)
+        else:
+            mail_content = "Nowy projekt stworzony przez klienta"
+
+        email = EmailMessage('Nowy projekt', mail_content, 'dekk@pipesprefabrication.pl', ['michal.jgl@gmail.com']) #, 'info@dekk.pl', 'kontakt@strony-piaseczno.pl'])
         email.attach('projekt.pdf', pdf_generator.generate(template), 'application/pdf')
         email.send()
 
@@ -427,14 +434,15 @@ class OutflowsManipulateView(View):
             pref_outflow = PrefabricateOutflow.objects.get(prefabricate=prefabricate,
                                                            index=index)
             pref_outflow.outflow = outflow
-            pref_outflow.distance = 1
+            pref_outflow.distance = 10
             pref_outflow.save()
         except PrefabricateOutflow.DoesNotExist:
             PrefabricateOutflow.objects.create(prefabricate=prefabricate,
                                                outflow=outflow,
                                                index=index,
-                                               distance=1,
-                                               size=PipeOutflowSize.objects.filter(available=True)[0])
+                                               distance=10,
+                                               #size=PipeOutflowSize.objects.filter(available=True)[0])
+                                               size=PipeDiameterAvailablePipeOutflow.objects.filter(size__available=True).first().size)
 
         return HttpResponse()
 
@@ -516,6 +524,29 @@ class OuutflowSizeManipulateView(View):
 
         prefabricate_outflow.size = form.cleaned_data.get('size')
         prefabricate_outflow.save()
+
+        return HttpResponse()
+
+
+class ProjectCommentView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProjectCommentView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        form = ProjectCommentForm(request.GET)
+
+        if not form.is_valid():
+            raise SuspiciousOperation(form.errors)
+
+        try:
+            project = Project.objects.get(id=form.cleaned_data.get('project_id'))
+        except Project.DoesNotExist:
+            raise SuspiciousOperation("Project not exists")
+
+        project.comment = form.cleaned_data.get('comment')
+        project.save()
 
         return HttpResponse()
 

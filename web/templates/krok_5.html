@@ -2,6 +2,8 @@
 {% load staticfiles %}
 
 {% block wrapper %}
+
+    <script src="{% static 'comment_add.js' %}" xmlns="http://www.w3.org/1999/html"></script>
 	<div class="wrapper">
 
 
@@ -18,10 +20,6 @@
 			</div>
 
 		</div>
-
-
-
-
 
 	    <div class="content_krok">
             <h3>Krok <span class="numeracja">5</span></h3>
@@ -60,6 +58,7 @@
             </div>
 
             <div class="clear"></div>
+            <textarea id="project_comment" name='Komentarz do projektu' placeholder='Komentarz do projektu' rows="10" cols="50" style="resize: none" onchange="commeentAdd({{ prefabricates.0.project_id }})">{{ prefabricates.0.project.comment }}</textarea></br>
             <button class="cofnij" onclick="location.href='{% url "zakoncz_projekt" %}';">ZAKOŃCZ</button>
 
 			</div>

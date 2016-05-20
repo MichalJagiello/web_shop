@@ -29,6 +29,7 @@ class Project(models.Model):
                                                                    "formacie, np. 00-000")])
     number = models.CharField(max_length=24, verbose_name='Numer')
     pdf = models.FileField(verbose_name='Plik projektu', null=True, upload_to='projects_files')
+    comment = models.TextField(verbose_name='Komentarz do projektu', default='')
 
     class Meta:
         verbose_name = 'Projekt'
@@ -98,7 +99,7 @@ class PrefabricateOutflow(models.Model):
     size = models.ForeignKey(PipeOutflowSize, verbose_name='Rozmiar odejścia')
     index = models.IntegerField(verbose_name='Indeks')
     distance = models.IntegerField(verbose_name='Odległość')
-    distance_to_end = models.IntegerField(verbose_name='Odległość do końca', default=1)
+    distance_to_end = models.IntegerField(verbose_name='Odległość do końca', default=10)
 
     @property
     def index_between_previous(self):

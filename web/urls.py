@@ -22,7 +22,8 @@ from web.views import MainPageView,\
                       PrintPdfFileView, \
                       PrintPrefabricatePdfFileView, \
                       ThirdAndQuaterStepView, \
-                      OuutflowSizeManipulateView
+                      OuutflowSizeManipulateView, \
+                      ProjectCommentView
 
 urlpatterns = [
     url(r'^$', MainPageView.as_view(), name='main'),
@@ -47,4 +48,5 @@ urlpatterns = [
     url(r'^krok_3/outflow/$', OutflowsManipulateView.as_view(), name='outflows_manipulate'),
     url(r'^krok_4/outflow_size/$', OuutflowSizeManipulateView.as_view(), name='outflows_size_manipulate'),
     url(r'^krok_5/outflow_distance/$', OutflowDistanceManipulateView.as_view(), name='outflows_distance_manipulate'),
+    url(r'^zapisz_projekt/project_comment', ProjectCommentView.as_view(), name='project_comment'),
 ]

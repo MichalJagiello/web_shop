@@ -28,9 +28,27 @@ function changeOutflow(prefabricate_id, outflow_id, index, css_class) {
 }
 
 function changeDistance(prefabricate_id, distance_input_id) {
-    var url = "outflow_distance/?prefabricate_id=" + encodeURI(prefabricate_id) + "&index=" + encodeURI(distance_input_id) + "&distance=" + encodeURI($("#input_" + distance_input_id).val());
+    val = $("#input_" + distance_input_id).val();
+    if (val < 10) {
+        val = 10;
+        $("#input_" + distance_input_id).val(10);
+    }
+    else {
+        val_sum = 0;
+        for(i = 0; i <= 20; ++i) {
+            input_val = parseInt($("#input_" + i).val());
+            if (isNaN(input_val)) {
+                continue;
+            }
+            val_sum += parseInt($("#input_" + i).val());
+        }
+        if(val_sum > 600) {
+            val -= (val_sum - 600);
+        }
+    }
+    var url = "outflow_distance/?prefabricate_id=" + encodeURI(prefabricate_id) + "&index=" + encodeURI(distance_input_id) + "&distance=" + encodeURI(val);
     request.open("POST", url, true);
-    request.onreadystatechange = function(){updatePageDistance(distance_input_id, $("#input_" + distance_input_id).val());};
+    request.onreadystatechange = function(){updatePageDistance(distance_input_id, val);};
     request.send(null);
 }
 
