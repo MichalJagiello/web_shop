@@ -702,9 +702,6 @@ background-position: center center;
 visibility: hidden;
 position: absolute;
 bottom: -100px;
-  -webkit-transition: 0.2s ease;
--o-transition: 0.2s ease;
-transition: 0.2s ease;
 }
 
 .lokalizacje:hover .odejscia_lista{
@@ -725,9 +722,6 @@ margin-bottom: 3px;
 border: dotted #ccc 1px;
 padding: 3px;
 text-align: left;
-  -webkit-transition: 0.2s ease;
--o-transition: 0.2s ease;
-transition: 0.2s ease;
 }
 
 .lokalizacje ul li:hover{
