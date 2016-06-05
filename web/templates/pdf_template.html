@@ -377,6 +377,12 @@ width: 38px;
     padding-top: 15px;
     width: 18px;
 }
+
+.lokalizacje div {
+    margin-top: -15px;
+    font-size: 12px;
+}
+
     </style>
 
 	<script>
@@ -472,9 +478,9 @@ width: 38px;
 							{% for localization in prefabricate.localizations %}
 
 								{% if localization.outflow and localization.distance %}
-									<div class="lokalizacje {{ localization.outflow.outflow.css_class }}"><span style="visibility: visible">{{ localization.distance }} cm</span></div>
+									<div class="lokalizacje {{ localization.outflow.outflow.css_class }}"><div>DN {{ localization.outflow.size.size }}</div><span style="visibility: visible">{{ localization.distance }} cm</span></div>
 								{% elif localization.outflow %}
-									<div class="lokalizacje {{ localization.outflow.outflow.css_class }}"><span style="visibility: visible"></span></div>
+									<div class="lokalizacje {{ localization.outflow.outflow.css_class }}"><div>DN {{ localization.outflow.size.size }}</div><span style="visibility: visible"></span></div>
 								{% elif localization.distance %}
 									<div class="lokalizacje"><span class="bez_odejscia" style="visibility: visible">{{ localization.distance }} cm</span></div>
 								{% else %}

@@ -699,9 +699,10 @@ background-position: center center;
 }
 
 .lokalizacje ul{
-visibility: hidden;
-position: absolute;
-bottom: -100px;
+    visibility: hidden;
+    position: absolute;
+    bottom: -100px;
+    top: 81px;
 }
 
 .lokalizacje:hover .odejscia_lista{
@@ -718,7 +719,7 @@ bottom: -100px;
 
 .lokalizacje ul li{
 list-style-type: none;
-margin-bottom: 3px;
+margin-bottom: 2px;
 border: dotted #ccc 1px;
 padding: 3px;
 text-align: left;
